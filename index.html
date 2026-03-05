@@ -1,0 +1,2090 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Controle de Doações — Acampamento de Jovens</title>
+    <link rel="icon" href="images/acamps-logo.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #1a1510;
+        --card: #231e17;
+        --card-hover: #2c2519;
+        --accent: #e8943a;
+        --accent-light: #f0b060;
+        --success: #4caf50;
+        --success-bg: rgba(76, 175, 80, 0.12);
+        --warning: #ff9800;
+        --warning-bg: rgba(255, 152, 0, 0.12);
+        --danger: #ef5350;
+        --danger-bg: rgba(239, 83, 80, 0.12);
+        --choco-bg: rgba(139, 69, 19, 0.15);
+        --choco-text: #d4915c;
+        --text: #f5efe6;
+        --text2: #a89a88;
+        --border: #3a3228;
+        --input-bg: #1e1912;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "DM Sans", "Segoe UI", sans-serif;
+        background: linear-gradient(180deg, var(--bg), #0f0d09);
+        color: var(--text);
+        min-height: 100vh;
+      }
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 99px;
+      }
+      input:focus,
+      select:focus {
+        border-color: var(--accent) !important;
+        outline: none;
+      }
+      button {
+        font-family: inherit;
+        cursor: pointer;
+      }
+      button:hover:not(:disabled) {
+        filter: brightness(1.1);
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .header {
+        padding: 24px 32px 0;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .header h1 {
+        font-size: 22px;
+        font-family: "DM Serif Display", serif;
+        font-weight: 400;
+      }
+      .header p {
+        color: var(--text2);
+        font-size: 12px;
+        margin-top: 1px;
+      }
+      .tabs {
+        display: flex;
+        gap: 2px;
+        margin-top: 16px;
+        border-bottom: 1px solid var(--border);
+        overflow-x: auto;
+      }
+      .tab-btn {
+        padding: 10px 14px;
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid transparent;
+        color: var(--text2);
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        white-space: nowrap;
+        transition: 0.2s;
+      }
+      .tab-btn.active {
+        border-bottom-color: var(--accent);
+        color: var(--text);
+        font-weight: 600;
+      }
+      .main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 24px 32px 60px;
+      }
+      .stats-row {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+      }
+      .stat-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 18px 20px;
+        flex: 1 1 200px;
+        min-width: 160px;
+      }
+      .stat-label {
+        color: var(--text2);
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 10px;
+      }
+      .stat-value {
+        font-size: 24px;
+        font-weight: 700;
+        font-family: "DM Serif Display", serif;
+      }
+      .stat-sub {
+        color: var(--text2);
+        font-size: 12px;
+        margin-top: 4px;
+      }
+      .controls {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .search-input,
+      .filter-select {
+        padding: 9px 14px;
+        background: var(--input-bg);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text);
+        font-size: 13px;
+        outline: none;
+      }
+      .search-input {
+        flex: 1 1 140px;
+        min-width: 100px;
+      }
+      .btn {
+        padding: 10px 18px;
+        border-radius: 10px;
+        border: none;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+        transition: 0.2s;
+      }
+      .btn-primary {
+        background: var(--accent);
+        color: #1a1510;
+        font-weight: 700;
+      }
+      .btn-secondary {
+        background: transparent;
+        color: var(--text2);
+        border: 1px solid var(--border);
+      }
+      .btn-success {
+        background: var(--success-bg);
+        color: var(--success);
+      }
+      .btn-danger {
+        background: var(--danger-bg);
+        color: var(--danger);
+      }
+      .btn-ghost {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text2);
+      }
+      .btn-choco {
+        background: var(--choco-bg);
+        color: var(--choco-text);
+        font-weight: 600;
+      }
+      .btn-sm {
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .pw {
+        width: 100%;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .pb {
+        height: 100%;
+        border-radius: 99px;
+        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .pw.lg {
+        height: 10px;
+      }
+      .table {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+      }
+      .t-hdr {
+        display: grid;
+        padding: 12px 18px;
+        border-bottom: 1px solid var(--border);
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text2);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+      }
+      .t-row {
+        display: grid;
+        padding: 13px 18px;
+        align-items: center;
+        border-bottom: 1px solid rgba(58, 50, 40, 0.13);
+        transition: background 0.15s;
+      }
+      .t-row:hover {
+        background: var(--card-hover);
+      }
+      .t-row:last-child {
+        border-bottom: none;
+      }
+      .food-cols {
+        grid-template-columns: 2.2fr 0.8fr 0.8fr 120px 120px;
+      }
+      .sponsor-cols {
+        grid-template-columns: 2fr 1fr 1fr 1.2fr 70px;
+      }
+      .bs-cols {
+        grid-template-columns: 1.2fr 0.7fr 0.8fr 1fr 1.2fr 60px;
+      }
+      .bc-cols {
+        grid-template-columns: 1.2fr 2fr 1fr 60px;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 99px;
+        flex-shrink: 0;
+      }
+      .badge {
+        padding: 3px 10px;
+        border-radius: 99px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .ib {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .cl {
+        display: none;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .fc,
+      .sc,
+      .bc {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+      }
+      .gb {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 22px;
+      }
+      .mo {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(4px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+      .mo.open {
+        display: flex;
+        animation: fadeIn 0.2s;
+      }
+      .md {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+        width: 100%;
+        max-width: 440px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        max-height: 85vh;
+        overflow-y: auto;
+      }
+      .md.wide {
+        max-width: 560px;
+      }
+      .mt {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+      }
+      .mt h3 {
+        font-size: 17px;
+        font-family: "DM Serif Display", serif;
+        font-weight: 400;
+      }
+      .cb {
+        background: none;
+        border: none;
+        color: var(--text2);
+        padding: 4px;
+        cursor: pointer;
+      }
+      .fg {
+        margin-bottom: 14px;
+      }
+      .fg label {
+        display: block;
+        font-size: 12px;
+        color: var(--text2);
+        margin-bottom: 5px;
+        font-weight: 500;
+      }
+      .fg input,
+      .fg select {
+        width: 100%;
+        padding: 10px 14px;
+        background: var(--input-bg);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text);
+        font-size: 14px;
+        outline: none;
+      }
+      .fr {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .fa {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 8px;
+      }
+      .ib2 {
+        background: var(--input-bg);
+        border-radius: 10px;
+        padding: 14px;
+        margin-bottom: 16px;
+        border: 1px solid var(--border);
+      }
+      .hi {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(58, 50, 40, 0.13);
+        gap: 12px;
+      }
+      .hi:last-child {
+        border-bottom: none;
+      }
+      .hb {
+        padding: 4px 12px;
+        border-radius: 8px;
+        background: var(--success-bg);
+        color: var(--success);
+        font-weight: 700;
+        font-size: 14px;
+        white-space: nowrap;
+      }
+      .cg {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        margin-bottom: 18px;
+      }
+      .cc {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px;
+        min-width: 0;
+        overflow: hidden;
+      }
+      .cc h4 {
+        font-family: "DM Serif Display", serif;
+        font-weight: 400;
+        font-size: 15px;
+        margin-bottom: 16px;
+      }
+      .ag {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 10px;
+      }
+      .loading {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--text2);
+      }
+      .spinner {
+        width: 32px;
+        height: 32px;
+        border: 3px solid var(--border);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin: 0 auto 16px;
+      }
+      .empty {
+        padding: 40px;
+        text-align: center;
+        color: var(--text2);
+        font-size: 14px;
+      }
+      .tb {
+        display: flex;
+        background: var(--input-bg);
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        overflow: hidden;
+      }
+      .tbb {
+        padding: 8px 16px;
+        border: none;
+        font-size: 13px;
+        background: transparent;
+        color: var(--text2);
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .tbb.active {
+        background: var(--choco-bg);
+        color: var(--choco-text);
+        font-weight: 600;
+      }
+      .sm {
+        display: flex;
+        gap: 12px;
+        margin-top: 16px;
+        flex-wrap: wrap;
+      }
+      .sm > div {
+        flex: 1 1 150px;
+        background: var(--input-bg);
+        border-radius: 10px;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+      }
+      .sm .sl {
+        font-size: 11px;
+        color: var(--text2);
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+      .sm .sv {
+        font-size: 20px;
+        font-weight: 700;
+        font-family: "DM Serif Display", serif;
+      }
+      .sm .ss {
+        font-size: 11px;
+        color: var(--text2);
+        margin-top: 2px;
+      }
+      .tr {
+        padding: 12px 18px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+      }
+      .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 2000;
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        animation: slideUp 0.3s;
+        display: none;
+      }
+      .toast.show {
+        display: block;
+      }
+      .toast.ok {
+        background: var(--success-bg);
+        color: var(--success);
+        border: 1px solid rgba(76, 175, 80, 0.3);
+      }
+      .toast.err {
+        background: var(--danger-bg);
+        color: var(--danger);
+        border: 1px solid rgba(239, 83, 80, 0.3);
+      }
+      @media (max-width: 768px) {
+        .header,
+        .main {
+          padding-left: 14px;
+          padding-right: 14px;
+        }
+        .main {
+          padding-top: 16px;
+          padding-bottom: 60px;
+        }
+        .header {
+          padding-top: 16px;
+        }
+        .dt {
+          display: none !important;
+        }
+        .cl {
+          display: flex !important;
+        }
+        .cg {
+          grid-template-columns: 1fr !important;
+        }
+        .stats-row > .stat-card {
+          min-width: 100% !important;
+          flex-basis: 100% !important;
+        }
+        .hm {
+          display: none !important;
+        }
+        .tl {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ══════════════════════════════════════ -->
+    <!--  ⚠️  CONFIGURE A URL DA SUA API AQUI  -->
+    <!-- ══════════════════════════════════════ -->
+
+    <div id="toast" class="toast"></div>
+
+    <header class="header">
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 4px;
+        "
+      >
+        <img src="images/acamps-logo.png" width="36" height="36" alt="Logo Acamps" style="object-fit:contain;" />
+        <div>
+          <h1>Acampamento de Jovens</h1>
+          <p>Controle de Doações · 2026</p>
+        </div>
+      </div>
+      <div class="tabs">
+        <button
+          class="tab-btn active"
+          onclick="go('alimentos')"
+          id="tab-alimentos"
+        >
+          🍚 <span class="tl">Alimentos</span>
+        </button>
+        <button
+          class="tab-btn"
+          onclick="go('apadrinhamento')"
+          id="tab-apadrinhamento"
+        >
+          💰 <span class="tl">Apadrinhamento</span>
+        </button>
+        <button
+          class="tab-btn"
+          onclick="go('brigadeiros')"
+          id="tab-brigadeiros"
+        >
+          🍫 <span class="tl">Brigadeiros</span>
+        </button>
+        <button class="tab-btn" onclick="go('dashboard')" id="tab-dashboard">
+          📊 <span class="tl">Dashboard</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="main">
+      <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Carregando dados...</p>
+      </div>
+      <div id="page-alimentos" style="display: none">
+        <div class="stats-row" id="fs"></div>
+        <div class="controls">
+          <input
+            class="search-input"
+            placeholder="Buscar alimento..."
+            oninput="ff()"
+            id="fsearch"
+          /><select class="filter-select" onchange="ff()" id="ffilter">
+            <option value="all">Todos</option>
+            <option value="done">✅ Completos</option>
+            <option value="pending">⏳ Pendentes</option></select
+          ><button class="btn btn-primary" onclick="om('add-food')">
+            + <span class="hm">Novo Alimento</span>
+          </button>
+        </div>
+        <div class="table dt" id="ftable"></div>
+        <div class="cl" id="fcards"></div>
+      </div>
+      <div id="page-apadrinhamento" style="display: none">
+        <div class="gb" id="gban"></div>
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+          "
+        >
+          <h3
+            style="
+              font-family: &quot;DM Serif Display&quot;, serif;
+              font-weight: 400;
+              font-size: 16px;
+            "
+            id="sc"
+          >
+            Doações (0)
+          </h3>
+          <button class="btn btn-primary" onclick="om('add-sponsor')">
+            + Nova Doação
+          </button>
+        </div>
+        <div class="table dt" id="stable"></div>
+        <div class="cl" id="scards"></div>
+      </div>
+      <div id="page-brigadeiros" style="display: none">
+        <div class="gb" id="bban"></div>
+        <div
+          style="
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+          "
+        >
+          <div class="tb">
+            <button class="tbb active" id="bt-sales" onclick="bv('sales')">
+              📦 Vendas</button
+            ><button class="tbb" id="bt-costs" onclick="bv('costs')">
+              💸 Custos
+            </button>
+          </div>
+          <div style="flex: 1"></div>
+          <button class="btn btn-choco" id="badd" onclick="om('add-brig-sale')">
+            + Lançar Venda
+          </button>
+        </div>
+        <div id="bcont"></div>
+      </div>
+      <div id="page-dashboard" style="display: none">
+        <div class="stats-row" id="ds"></div>
+        <div class="cg">
+          <div class="cc">
+            <h4>Progresso dos Alimentos</h4>
+            <div
+              id="bar"
+              style="
+                width: 100%;
+                height: 240px;
+                display: flex;
+                align-items: flex-end;
+                gap: 4px;
+                padding-top: 10px;
+              "
+            ></div>
+          </div>
+          <div class="cc">
+            <h4>Arrecadação Financeira</h4>
+            <div id="fin"></div>
+          </div>
+        </div>
+        <div class="cc">
+          <h4>Itens que Precisam de Atenção</h4>
+          <div id="att"></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- MODALS -->
+    <div class="mo" id="m-add-food">
+      <div class="md" onclick="event.stopPropagation()">
+        <div class="mt">
+          <h3>Adicionar Alimento</h3>
+          <button class="cb" onclick="cm()">✕</button>
+        </div>
+        <div class="fg">
+          <label>Nome do Alimento</label
+          ><input id="af-n" placeholder="Ex: Arroz, Feijão..." />
+        </div>
+        <div class="fr">
+          <div class="fg">
+            <label>Unidade</label
+            ><select id="af-u">
+              <option>kg</option>
+              <option>un</option>
+              <option>L</option>
+              <option>dz</option>
+              <option>pct</option>
+              <option>cx</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Meta (qtd)</label
+            ><input id="af-g" type="number" min="1" placeholder="0" />
+          </div>
+        </div>
+        <div class="fa">
+          <button class="btn btn-secondary" onclick="cm()">Cancelar</button
+          ><button class="btn btn-primary" onclick="saf(this)">
+            Adicionar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mo" id="m-edit-food">
+      <div class="md" onclick="event.stopPropagation()">
+        <div class="mt">
+          <h3>Editar Alimento</h3>
+          <button class="cb" onclick="cm()">✕</button>
+        </div>
+        <input type="hidden" id="ef-id" />
+        <div class="fg"><label>Nome</label><input id="ef-n" /></div>
+        <div class="fr">
+          <div class="fg">
+            <label>Unidade</label
+            ><select id="ef-u">
+              <option>kg</option>
+              <option>un</option>
+              <option>L</option>
+              <option>dz</option>
+              <option>pct</option>
+              <option>cx</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Meta</label><input id="ef-g" type="number" min="1" />
+          </div>
+        </div>
+        <div class="fa">
+          <button class="btn btn-secondary" onclick="cm()">Cancelar</button
+          ><button class="btn btn-primary" onclick="sef(this)">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mo" id="m-donate">
+      <div class="md" onclick="event.stopPropagation()">
+        <div class="mt">
+          <h3 id="dt">Registrar Doação</h3>
+          <button class="cb" onclick="cm()">✕</button>
+        </div>
+        <input type="hidden" id="d-id" />
+        <div class="ib2" id="di"></div>
+        <div class="fg">
+          <label id="dl">Quantidade</label
+          ><input id="d-a" type="number" min="1" placeholder="0" />
+        </div>
+        <div class="fg">
+          <label>Doador (opcional)</label
+          ><input id="d-d" placeholder="Nome de quem doou" />
+        </div>
+        <div class="fa">
+          <button class="btn btn-secondary" onclick="cm()">Cancelar</button
+          ><button class="btn btn-success" onclick="sd(this)">
+            + Registrar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mo" id="m-history">
+      <div class="md wide" onclick="event.stopPropagation()">
+        <div class="mt">
+          <h3 id="ht">Histórico</h3>
+          <button class="cb" onclick="cm()">✕</button>
+        </div>
+        <div id="hc"></div>
+      </div>
+    </div>
+
+    <div class="mo" id="m-add-sponsor">
+      <div class="md" onclick="event.stopPropagation()">
+        <div class="mt">
+          <h3>Registrar Doação</h3>
+          <button class="cb" onclick="cm()">✕</button>
+        </div>
+        <div class="fg">
+          <label>Nome do Doador</label
+          ><input id="as-n" placeholder="Ex: João da Silva" />
+        </div>
+        <div class="fr">
+          <div class="fg">
+            <label>Valor (R$)</label
+            ><input id="as-v" type="number" min="1" placeholder="0" />
+          </div>
+          <div class="fg">
+            <label>Método</label
+            ><select id="as-m">
+              <option>PIX</option>
+              <option>Dinheiro</option>
+              <option>Transferência</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Jovem Apadrinhado (ou 'Geral')</label
+          ><input id="as-y" placeholder="Nome do jovem" />
+        </div>
+        <div class="fg"><label>Data</label><input id="as-d" type="date" /></div>
+        <div class="fa">
+          <button class="btn btn-secondary" onclick="cm()">Cancelar</button
+          ><button class="btn btn-primary" onclick="sas(this)">
+            Registrar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mo" id="m-edit-goal">
+      <div class="md" onclick="event.stopPropagation()">
+        <div class="mt">
+          <h3>Editar Meta de Arrecadação</h3>
+          <button class="cb" onclick="cm()">✕</button>
+        </div>
+        <p style="font-size: 13px; color: var(--text2); margin-bottom: 16px">
+          Valor total para apadrinhamento.
+        </p>
+        <div class="fg">
+          <label>Nova Meta (R$)</label
+          ><input id="gv" type="number" min="1" placeholder="5000" />
+        </div>
+        <div class="fa">
+          <button class="btn btn-secondary" onclick="cm()">Cancelar</button
+          ><button class="btn btn-primary" onclick="sg(this)">
+            Salvar Meta
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mo" id="m-add-brig-sale">
+      <div class="md" onclick="event.stopPropagation()">
+        <div class="mt">
+          <h3>🍫 Lançar Venda</h3>
+          <button class="cb" onclick="cm()">✕</button>
+        </div>
+        <div class="fg"><label>Data</label><input id="bs-d" type="date" /></div>
+        <div class="fr">
+          <div class="fg">
+            <label>Quantidade vendida</label
+            ><input
+              id="bs-q"
+              type="number"
+              min="1"
+              placeholder="100"
+              oninput="ubp()"
+            />
+          </div>
+          <div class="fg">
+            <label>Preço unitário (R$)</label
+            ><input
+              id="bs-p"
+              type="number"
+              min="0.01"
+              step="0.50"
+              value="3.00"
+              oninput="ubp()"
+            />
+          </div>
+        </div>
+        <div
+          id="bs-pv"
+          style="
+            display: none;
+            background: var(--success-bg);
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 14px;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <span style="font-size: 13px; color: var(--success)">Total:</span
+          ><span
+            id="bs-t"
+            style="
+              font-size: 18px;
+              font-weight: 700;
+              color: var(--success);
+              font-family: &quot;DM Serif Display&quot;, serif;
+            "
+          ></span>
+        </div>
+        <div class="fg">
+          <label>Descrição (opcional)</label
+          ><input id="bs-ds" placeholder="Ex: Venda após missa" />
+        </div>
+        <div class="fa">
+          <button class="btn btn-secondary" onclick="cm()">Cancelar</button
+          ><button class="btn btn-choco" onclick="sbs(this)">
+            Lançar Venda
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mo" id="m-add-brig-cost">
+      <div class="md" onclick="event.stopPropagation()">
+        <div class="mt">
+          <h3>💸 Lançar Custo</h3>
+          <button class="cb" onclick="cm()">✕</button>
+        </div>
+        <div class="fg"><label>Data</label><input id="bc-d" type="date" /></div>
+        <div class="fg">
+          <label>Valor gasto (R$)</label
+          ><input
+            id="bc-v"
+            type="number"
+            min="0.01"
+            step="0.01"
+            placeholder="150.00"
+          />
+        </div>
+        <div class="fg">
+          <label>Descrição do material</label
+          ><input id="bc-ds" placeholder="Ex: Leite condensado (20 latas)" />
+        </div>
+        <div class="fa">
+          <button class="btn btn-secondary" onclick="cm()">Cancelar</button
+          ><button class="btn btn-choco" onclick="sbc(this)">
+            Lançar Custo
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mo" id="m-edit-brig-goal">
+      <div class="md" onclick="event.stopPropagation()">
+        <div class="mt">
+          <h3>Editar Meta de Brigadeiros</h3>
+          <button class="cb" onclick="cm()">✕</button>
+        </div>
+        <p style="font-size: 13px; color: var(--text2); margin-bottom: 16px">
+          Meta de lucro líquido (vendas − custos).
+        </p>
+        <div class="fg">
+          <label>Nova Meta (R$)</label
+          ><input id="bgv" type="number" min="1" placeholder="3000" />
+        </div>
+        <div class="fa">
+          <button class="btn btn-secondary" onclick="cm()">Cancelar</button
+          ><button class="btn btn-primary" onclick="sbg(this)">
+            Salvar Meta
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+
+      var API_URL = "https://script.google.com/macros/s/AKfycby1yH3GplwcrNW5pB0e7xsXx6qjLkP8uiYjK7yTjnuf-9PNZqx4FOT71NW9n9cQR14/exec";
+
+
+      // ═══ STATE ═══
+      var alimentos = [],
+        apadrinhamentos = [],
+        brigVendas = [],
+        brigCustos = [],
+        metaArr = 5000,
+        metaBrig = 3000,
+        curTab = "alimentos",
+        curBV = "sales";
+      var $ = function (id) {
+        return document.getElementById(id);
+      };
+      var F = function (v) {
+        return v.toLocaleString("pt-BR", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      };
+      function esc(s) {
+        var d = document.createElement("div");
+        d.textContent = s;
+        return d.innerHTML;
+      }
+      function fmtD(v) {
+        if (!v) return "";
+        var d = new Date(v);
+        if (isNaN(d)) return v;
+        return d.toLocaleDateString("pt-BR", { timeZone: "UTC" });
+      }
+
+      // ═══ API ═══
+      function apiGet(action, params) {
+        var url = API_URL + "?action=" + action;
+        if (params)
+          for (var k in params)
+            url += "&" + k + "=" + encodeURIComponent(params[k]);
+        return fetch(url).then(function (r) {
+          return r.json();
+        });
+      }
+
+      function apiPost(body) {
+        return fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(body),
+        }).then(function (r) {
+          return r.json();
+        });
+      }
+
+      function toast(msg, ok) {
+        var el = $("toast");
+        el.textContent = msg;
+        el.className = "toast show " + (ok ? "ok" : "err");
+        setTimeout(function () {
+          el.className = "toast";
+        }, 3000);
+      }
+
+      function setL(b, l) {
+        b.disabled = l;
+        if (l) b.dataset.o = b.textContent;
+        b.textContent = l ? "Salvando..." : b.dataset.o || "OK";
+      }
+
+      // ═══ INIT ═══
+      window.onload = function () {
+        apiGet("carregarTudo")
+          .then(function (d) {
+            alimentos = d.alimentos || [];
+            apadrinhamentos = d.apadrinhamentos || [];
+            brigVendas = d.brigVendas || [];
+            brigCustos = d.brigCustos || [];
+            metaArr = d.metaArrecadacao || 5000;
+            metaBrig = d.metaBrigadeiros || 3000;
+            $("loading").style.display = "none";
+            R();
+            go("alimentos");
+          })
+          .catch(function (e) {
+            $("loading").innerHTML =
+              '<p style="color:var(--danger)">Erro ao conectar com a API.<br><br><small style="color:var(--text2)">Verifique se a URL está correta e se o deploy está como "Qualquer pessoa".</small></p>';
+          });
+      };
+
+      // ═══ TABS ═══
+      function go(t) {
+        curTab = t;
+        ["alimentos", "apadrinhamento", "brigadeiros", "dashboard"].forEach(
+          function (x) {
+            $("page-" + x).style.display = x === t ? "block" : "none";
+            $("tab-" + x).className = "tab-btn" + (x === t ? " active" : "");
+          },
+        );
+        if (t === "dashboard") rDash();
+      }
+
+      function R() {
+        rFS();
+        rFT();
+        rGB();
+        rST();
+        rBB();
+        rBC();
+        if (curTab === "dashboard") rDash();
+      }
+
+      // ═══ PROGRESS BAR ═══
+      function pb(v, m, lg) {
+        var p = m > 0 ? Math.min((v / m) * 100, 100) : 0,
+          dn = v >= m;
+        var c = dn
+          ? "var(--success)"
+          : p >= 70
+            ? "var(--warning)"
+            : "var(--accent)";
+        return (
+          '<div class="pw' +
+          (lg ? " lg" : "") +
+          '"><div class="pb" style="width:' +
+          p +
+          "%;background:" +
+          c +
+          '"></div></div>'
+        );
+      }
+
+      function sc(i, l, v, s, c) {
+        return (
+          '<div class="stat-card"><div class="stat-label">' +
+          i +
+          " " +
+          l +
+          '</div><div class="stat-value" style="color:' +
+          (c || "var(--text)") +
+          '">' +
+          v +
+          '</div><div class="stat-sub">' +
+          s +
+          "</div></div>"
+        );
+      }
+
+      function ib(bg, c, fn, icon) {
+        return (
+          '<button class="ib" style="background:' +
+          bg +
+          ";color:" +
+          c +
+          '" onclick="' +
+          fn +
+          '">' +
+          icon +
+          "</button>"
+        );
+      }
+
+      // ═══ ALIMENTOS ═══
+      function rFS() {
+        var t = alimentos.length,
+          d = alimentos.filter(function (f) {
+            return f.received >= f.goal;
+          }).length,
+          p = t - d;
+        $("fs").innerHTML =
+          sc("📦", "Total", t, d + " completos") +
+          sc(
+            "✅",
+            "Metas Batidas",
+            (t > 0 ? Math.round((d / t) * 100) : 0) + "%",
+            d + " de " + t,
+            "var(--success)",
+          ) +
+          sc(
+            "⚠️",
+            "Pendentes",
+            p,
+            p === 0 ? "Tudo completo!" : "Precisam de doações",
+            p > 0 ? "var(--warning)" : "var(--success)",
+          );
+      }
+
+      function gff() {
+        var s = ($("fsearch").value || "").toLowerCase(),
+          f = $("ffilter").value;
+        return alimentos
+          .filter(function (x) {
+            return x.name.toLowerCase().includes(s);
+          })
+          .filter(function (x) {
+            if (f === "done") return x.received >= x.goal;
+            if (f === "pending") return x.received < x.goal;
+            return true;
+          })
+          .sort(function (a, b) {
+            if (a.received >= a.goal && b.received < b.goal) return 1;
+            if (a.received < a.goal && b.received >= b.goal) return -1;
+            return (
+              (a.goal > 0 ? a.received / a.goal : 0) -
+              (b.goal > 0 ? b.received / b.goal : 0)
+            );
+          });
+      }
+      function ff() {
+        rFT();
+      }
+
+      function rFT() {
+        var foods = gff(),
+          h =
+            '<div class="t-hdr food-cols"><span>Alimento</span><span style="text-align:center">Recebido</span><span style="text-align:center">Meta</span><span>Progresso</span><span style="text-align:center">Ações</span></div>',
+          c = "";
+        if (!foods.length) {
+          h += '<div class="empty">Nenhum alimento encontrado</div>';
+          c = '<div class="empty">Nenhum alimento encontrado</div>';
+        }
+        foods.forEach(function (f) {
+          var dn = f.received >= f.goal,
+            rm = Math.max(f.goal - f.received, 0),
+            pct = f.goal > 0 ? (f.received / f.goal) * 100 : 0;
+          var dc = dn
+            ? "var(--success)"
+            : pct >= 70
+              ? "var(--warning)"
+              : "var(--accent)";
+          var st = dn ? "✓ Meta batida!" : "Faltam " + rm + " " + f.unit;
+          var stc = dn ? "var(--success)" : "var(--text2)";
+          h +=
+            '<div class="t-row food-cols"><div style="display:flex;align-items:center;gap:10px"><div class="dot" style="background:' +
+            dc +
+            '"></div><div><span style="font-weight:600;font-size:14px">' +
+            esc(f.name) +
+            '</span><div style="font-size:11px;color:' +
+            stc +
+            ';margin-top:2px">' +
+            st +
+            '</div></div></div><span style="text-align:center;font-weight:600;color:' +
+            (dn ? "var(--success)" : "var(--text)") +
+            '">' +
+            f.received +
+            " " +
+            f.unit +
+            '</span><span style="text-align:center;font-size:13px;color:var(--text2)">' +
+            f.goal +
+            " " +
+            f.unit +
+            "</span>" +
+            pb(f.received, f.goal) +
+            '<div style="display:flex;gap:4px;justify-content:center">' +
+            ib(
+              "var(--success-bg)",
+              "var(--success)",
+              "oD(" + f.id + ")",
+              "＋",
+            ) +
+            ib(
+              "rgba(255,255,255,.05)",
+              "var(--text2)",
+              "oH(" + f.id + ")",
+              "⏱",
+            ) +
+            ib(
+              "rgba(255,255,255,.05)",
+              "var(--text2)",
+              "oEF(" + f.id + ")",
+              "✎",
+            ) +
+            ib("var(--danger-bg)", "var(--danger)", "dF(" + f.id + ")", "✕") +
+            "</div></div>";
+          c +=
+            '<div class="fc"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:12px"><div style="flex:1"><div style="display:flex;align-items:center;gap:8px"><div class="dot" style="background:' +
+            dc +
+            '"></div><span style="font-weight:600;font-size:15px">' +
+            esc(f.name) +
+            '</span></div><span style="font-size:12px;color:' +
+            stc +
+            ';margin-left:16px">' +
+            st +
+            '</span></div><span style="font-size:14px;font-weight:600;color:' +
+            (dn ? "var(--success)" : "var(--text)") +
+            ';white-space:nowrap">' +
+            f.received +
+            "/" +
+            f.goal +
+            " " +
+            f.unit +
+            "</span></div>" +
+            pb(f.received, f.goal) +
+            '<div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap"><button class="btn btn-success btn-sm" onclick="oD(' +
+            f.id +
+            ')">+ Doar</button><button class="btn btn-ghost btn-sm" onclick="oH(' +
+            f.id +
+            ')">⏱ Histórico</button><button class="btn btn-ghost btn-sm" onclick="oEF(' +
+            f.id +
+            ')">✎ Editar</button><button class="btn btn-danger btn-sm" onclick="dF(' +
+            f.id +
+            ')">✕</button></div></div>';
+        });
+        $("ftable").innerHTML = h;
+        $("fcards").innerHTML = c;
+      }
+
+      // ═══ SPONSORS ═══
+      function rGB() {
+        var t = apadrinhamentos.reduce(function (s, d) {
+            return s + d.amount;
+          }, 0),
+          p = Math.min((t / metaArr) * 100, 100),
+          c = p >= 100 ? "var(--success)" : "var(--accent)";
+        $("gban").innerHTML =
+          '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px"><div style="flex:1 1 180px"><h3 style="font-family:\'DM Serif Display\',serif;font-weight:400;font-size:17px;margin-bottom:3px">Meta de Arrecadação</h3><span style="color:var(--text2);font-size:12px">Apadrinhamento de jovens</span></div><div style="text-align:right"><div style="font-size:24px;font-weight:700;font-family:\'DM Serif Display\',serif;color:' +
+          c +
+          '">R$ ' +
+          F(t) +
+          '</div><div style="display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-top:2px"><span style="color:var(--text2);font-size:12px">de R$ ' +
+          F(metaArr) +
+          " (" +
+          Math.round(p) +
+          "%)</span><button style=\"background:rgba(255,255,255,.06);border:none;border-radius:6px;width:24px;height:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2)\" onclick=\"om('edit-goal');$('gv').value=metaArr\">⚙</button></div></div></div>" +
+          pb(t, metaArr, true) +
+          (p >= 100
+            ? '<div style="margin-top:12px;padding:7px 12px;background:var(--success-bg);border-radius:8px;color:var(--success);font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px">✓ Meta atingida!</div>'
+            : "");
+      }
+
+      function rST() {
+        var l = [].concat(apadrinhamentos).reverse();
+        $("sc").textContent = "Doações (" + apadrinhamentos.length + ")";
+        var h =
+            '<div class="t-hdr sponsor-cols"><span>Doador</span><span style="text-align:center">Valor</span><span style="text-align:center">Método</span><span>Jovem</span><span style="text-align:center">Ações</span></div>',
+          c = "";
+        if (!l.length) {
+          h += '<div class="empty">Nenhuma doação</div>';
+          c = h;
+        }
+        l.forEach(function (s) {
+          var bc =
+            s.method === "PIX"
+              ? "background:rgba(232,148,58,.15);color:var(--accent)"
+              : "background:rgba(255,255,255,.08);color:var(--text2)";
+          h +=
+            '<div class="t-row sponsor-cols"><div><span style="font-weight:600;font-size:14px">' +
+            esc(s.name) +
+            '</span><div style="color:var(--text2);font-size:11px;margin-top:1px">' +
+            fmtD(s.date) +
+            '</div></div><span style="text-align:center;font-weight:700;font-size:14px;color:var(--success)">R$ ' +
+            F(s.amount) +
+            '</span><div style="text-align:center"><span class="badge" style="' +
+            bc +
+            '">' +
+            esc(s.method) +
+            '</span></div><span style="font-size:13px;color:var(--text2)">' +
+            esc(s.youth) +
+            '</span><div style="display:flex;justify-content:center">' +
+            ib("var(--danger-bg)", "var(--danger)", "dS(" + s.id + ")", "✕") +
+            "</div></div>";
+          c +=
+            '<div class="sc"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:8px"><div style="min-width:0;flex:1"><span style="font-weight:600;font-size:14px">' +
+            esc(s.name) +
+            '</span><div style="color:var(--text2);font-size:11px;margin-top:1px">' +
+            fmtD(s.date) +
+            '</div></div><span style="font-weight:700;font-size:15px;color:var(--success);white-space:nowrap">R$ ' +
+            F(s.amount) +
+            '</span></div><div style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="badge" style="' +
+            bc +
+            '">' +
+            esc(s.method) +
+            '</span><span style="font-size:12px;color:var(--text2)">' +
+            esc(s.youth) +
+            '</span></div><button class="ib" style="background:var(--danger-bg);color:var(--danger);flex-shrink:0" onclick="dS(' +
+            s.id +
+            ')">✕</button></div></div>';
+        });
+        $("stable").innerHTML = h;
+        $("scards").innerHTML = c;
+      }
+
+      // ═══ BRIGADEIROS ═══
+      function bst() {
+        var rv = brigVendas.reduce(function (s, v) {
+            return s + v.qty * v.unitPrice;
+          }, 0),
+          co = brigCustos.reduce(function (s, c) {
+            return s + c.amount;
+          }, 0),
+          qt = brigVendas.reduce(function (s, v) {
+            return s + v.qty;
+          }, 0);
+        return { rv: rv, co: co, pr: rv - co, qt: qt };
+      }
+
+      function rBB() {
+        var st = bst(),
+          p = metaBrig > 0 ? Math.min((st.pr / metaBrig) * 100, 100) : 0,
+          c = p >= 100 ? "var(--success)" : "var(--choco-text)";
+        $("bban").innerHTML =
+          '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px"><div style="flex:1 1 180px"><h3 style="font-family:\'DM Serif Display\',serif;font-weight:400;font-size:17px;margin-bottom:3px">🍫 Venda de Brigadeiros</h3><span style="color:var(--text2);font-size:12px">Lucro líquido = Vendas − Custos</span></div><div style="text-align:right"><div style="font-size:24px;font-weight:700;font-family:\'DM Serif Display\',serif;color:' +
+          c +
+          '">R$ ' +
+          F(st.pr) +
+          '</div><div style="display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-top:2px"><span style="color:var(--text2);font-size:12px">de R$ ' +
+          F(metaBrig) +
+          " (" +
+          Math.round(Math.max(p, 0)) +
+          "%)</span><button style=\"background:rgba(255,255,255,.06);border:none;border-radius:6px;width:24px;height:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2)\" onclick=\"om('edit-brig-goal');$('bgv').value=metaBrig\">⚙</button></div></div></div>" +
+          pb(Math.max(st.pr, 0), metaBrig, true) +
+          '<div class="sm"><div><div class="sl">Vendas</div><div class="sv" style="color:var(--success)">R$ ' +
+          F(st.rv) +
+          '</div><div class="ss">' +
+          st.qt +
+          ' un vendidos</div></div><div><div class="sl">Custos Material</div><div class="sv" style="color:var(--danger)">R$ ' +
+          F(st.co) +
+          '</div><div class="ss">' +
+          brigCustos.length +
+          ' lançamentos</div></div><div><div class="sl">Lucro Líquido</div><div class="sv" style="color:' +
+          (st.pr >= 0 ? "var(--success)" : "var(--danger)") +
+          '">R$ ' +
+          F(st.pr) +
+          '</div><div class="ss">' +
+          (st.pr >= 0 ? "Valor real de doação" : "Prejuízo") +
+          "</div></div></div>" +
+          (p >= 100
+            ? '<div style="margin-top:14px;padding:7px 12px;background:var(--success-bg);border-radius:8px;color:var(--success);font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px">✓ Meta atingida!</div>'
+            : "");
+      }
+
+      function bv(v) {
+        curBV = v;
+        $("bt-sales").className = "tbb" + (v === "sales" ? " active" : "");
+        $("bt-costs").className = "tbb" + (v === "costs" ? " active" : "");
+        $("badd").textContent =
+          v === "sales" ? "+ Lançar Venda" : "+ Lançar Custo";
+        $("badd").onclick = function () {
+          om(v === "sales" ? "add-brig-sale" : "add-brig-cost");
+        };
+        rBC();
+      }
+
+      function rBC() {
+        var el = $("bcont");
+        if (curBV === "sales") {
+          var l = [].concat(brigVendas).reverse(),
+            h =
+              '<div class="table"><div class="t-hdr bs-cols"><span>Data</span><span style="text-align:center">Qtd</span><span style="text-align:center">Preço/Un</span><span style="text-align:center">Total</span><span>Descrição</span><span style="text-align:center">Ações</span></div>',
+            c = "";
+          if (!l.length) {
+            h += '<div class="empty">Nenhuma venda</div>';
+            c = '<div class="empty">Nenhuma venda</div>';
+          }
+          l.forEach(function (s) {
+            var t = s.qty * s.unitPrice;
+            h +=
+              '<div class="t-row bs-cols"><span style="font-weight:500">' +
+              fmtD(s.date) +
+              '</span><span style="text-align:center;font-weight:600">' +
+              s.qty +
+              ' un</span><span style="text-align:center;color:var(--text2);font-size:13px">R$ ' +
+              F(s.unitPrice) +
+              '</span><span style="text-align:center;font-weight:700;color:var(--success)">R$ ' +
+              F(t) +
+              '</span><span style="font-size:12px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' +
+              esc(s.description) +
+              '</span><div style="display:flex;justify-content:center">' +
+              ib(
+                "var(--danger-bg)",
+                "var(--danger)",
+                "dBS(" + s.id + ")",
+                "✕",
+              ) +
+              "</div></div>";
+            c +=
+              '<div class="bc"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;gap:8px"><div><span style="font-weight:600;font-size:14px">' +
+              fmtD(s.date) +
+              "</span>" +
+              (s.description
+                ? '<div style="color:var(--text2);font-size:11px;margin-top:1px">' +
+                  esc(s.description) +
+                  "</div>"
+                : "") +
+              '</div><span style="font-weight:700;font-size:15px;color:var(--success);white-space:nowrap">R$ ' +
+              F(t) +
+              '</span></div><div style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;gap:10px;font-size:12px;color:var(--text2)"><span>' +
+              s.qty +
+              " un</span><span>×</span><span>R$ " +
+              F(s.unitPrice) +
+              '</span></div><button class="ib" style="background:var(--danger-bg);color:var(--danger)" onclick="dBS(' +
+              s.id +
+              ')">✕</button></div></div>';
+          });
+          h += "</div>";
+          el.innerHTML =
+            '<div class="dt">' + h + '</div><div class="cl">' + c + "</div>";
+        } else {
+          var l = [].concat(brigCustos).reverse(),
+            h =
+              '<div class="table"><div class="t-hdr bc-cols"><span>Data</span><span>Descrição</span><span style="text-align:center">Valor</span><span style="text-align:center">Ações</span></div>',
+            c = "";
+          if (!l.length) {
+            h += '<div class="empty">Nenhum custo</div>';
+            c = '<div class="empty">Nenhum custo</div>';
+          }
+          l.forEach(function (x) {
+            h +=
+              '<div class="t-row bc-cols"><span style="font-weight:500">' +
+              fmtD(x.date) +
+              '</span><span style="font-size:13px;color:var(--text2)">' +
+              esc(x.description) +
+              '</span><span style="text-align:center;font-weight:700;color:var(--danger)">- R$ ' +
+              F(x.amount) +
+              '</span><div style="display:flex;justify-content:center">' +
+              ib(
+                "var(--danger-bg)",
+                "var(--danger)",
+                "dBC(" + x.id + ")",
+                "✕",
+              ) +
+              "</div></div>";
+            c +=
+              '<div class="bc"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div style="flex:1;min-width:0"><span style="font-weight:600;font-size:14px">' +
+              fmtD(x.date) +
+              '</span><div style="color:var(--text2);font-size:12px;margin-top:2px">' +
+              esc(x.description) +
+              '</div></div><div style="display:flex;align-items:center;gap:8px"><span style="font-weight:700;font-size:15px;color:var(--danger);white-space:nowrap">- R$ ' +
+              F(x.amount) +
+              '</span><button class="ib" style="background:var(--danger-bg);color:var(--danger);flex-shrink:0" onclick="dBC(' +
+              x.id +
+              ')">✕</button></div></div></div>';
+          });
+          var tot = brigCustos.reduce(function (s, x) {
+            return s + x.amount;
+          }, 0);
+          h +=
+            '<div class="tr"><span style="color:var(--text2);font-weight:500">Total custos</span><span style="font-weight:700;color:var(--danger)">R$ ' +
+            F(tot) +
+            "</span></div></div>";
+          el.innerHTML =
+            '<div class="dt">' + h + '</div><div class="cl">' + c + "</div>";
+        }
+      }
+
+      function ubp() {
+        var q = Number($("bs-q").value),
+          p = Number($("bs-p").value),
+          el = $("bs-pv");
+        if (q && p) {
+          el.style.display = "flex";
+          $("bs-t").textContent = "R$ " + F(q * p);
+        } else {
+          el.style.display = "none";
+        }
+      }
+
+      // ═══ DASHBOARD ═══
+      function rDash() {
+        var t = alimentos.length,
+          dn = alimentos.filter(function (f) {
+            return f.received >= f.goal;
+          }).length,
+          pn = t - dn;
+        var tm = apadrinhamentos.reduce(function (s, d) {
+            return s + d.amount;
+          }, 0),
+          sp = Math.min((tm / metaArr) * 100, 100);
+        var st = bst(),
+          gr = tm + Math.max(st.pr, 0),
+          bp = metaBrig > 0 ? Math.min((st.pr / metaBrig) * 100, 100) : 0;
+        $("ds").innerHTML =
+          sc(
+            "📦",
+            "Alimentos",
+            dn + "/" + t,
+            Math.round(t > 0 ? (dn / t) * 100 : 0) + "% das metas",
+            "var(--accent-light)",
+          ) +
+          sc(
+            "💰",
+            "Apadrinhamento",
+            "R$ " + F(tm),
+            Math.round(sp) + "% da meta",
+            "var(--success)",
+          ) +
+          sc(
+            "🍫",
+            "Brigadeiros",
+            "R$ " + F(st.pr),
+            Math.round(Math.max(bp, 0)) + "% da meta",
+            st.pr >= 0 ? "var(--choco-text)" : "var(--danger)",
+          ) +
+          sc(
+            "🏆",
+            "Total Arrecadado",
+            "R$ " + F(gr),
+            "Apadrinhamento + Brigadeiros",
+            "var(--success)",
+          );
+        var mx = Math.max.apply(
+          null,
+          alimentos.map(function (f) {
+            return Math.max(f.goal, f.received);
+          }),
+        );
+        if (!mx) mx = 1;
+        var bh = "";
+        alimentos.forEach(function (f) {
+          var rH = (f.received / mx) * 200,
+            gH = (f.goal / mx) * 200,
+            c = f.received >= f.goal ? "var(--success)" : "var(--accent)";
+          bh +=
+            '<div style="flex:1;min-width:30px;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="display:flex;gap:2px;align-items:flex-end;height:200px"><div style="width:14px;height:' +
+            rH +
+            "px;background:" +
+            c +
+            ';border-radius:3px 3px 0 0;transition:height .5s"></div><div style="width:14px;height:' +
+            gH +
+            'px;background:rgba(255,255,255,.08);border-radius:3px 3px 0 0"></div></div><span style="font-size:9px;color:var(--text2);text-align:center;max-width:50px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' +
+            esc(f.name) +
+            "</span></div>";
+        });
+        $("bar").innerHTML = bh;
+        var fh = "";
+        [
+          { l: "Apadrinhamento", v: tm, m: metaArr, c: "var(--success)" },
+          {
+            l: "Brigadeiros (líquido)",
+            v: Math.max(st.pr, 0),
+            m: metaBrig,
+            c: "var(--choco-text)",
+          },
+        ].forEach(function (i) {
+          var pp = i.m > 0 ? Math.round((i.v / i.m) * 100) : 0;
+          fh +=
+            '<div style="background:var(--input-bg);border-radius:10px;padding:14px;border:1px solid var(--border);margin-bottom:12px"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-weight:600;font-size:13px">' +
+            i.l +
+            '</span><span style="font-size:13px;font-weight:700;color:' +
+            i.c +
+            '">R$ ' +
+            F(i.v) +
+            "</span></div>" +
+            pb(i.v, i.m) +
+            '<div style="display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--text2)"><span>Meta: R$ ' +
+            F(i.m) +
+            "</span><span>" +
+            Math.min(pp, 100) +
+            "%</span></div></div>";
+        });
+        fh +=
+          '<div style="background:var(--input-bg);border-radius:10px;padding:14px;border:1px solid rgba(76,175,80,.2);border-left:3px solid var(--success)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-weight:600;font-size:14px">Total Arrecadado</span><span style="font-size:22px;font-weight:700;color:var(--success);font-family:\'DM Serif Display\',serif">R$ ' +
+          F(gr) +
+          "</span></div></div>";
+        $("fin").innerHTML = fh;
+        var pf = alimentos
+          .filter(function (f) {
+            return f.received < f.goal;
+          })
+          .sort(function (a, b) {
+            return a.received / a.goal - b.received / b.goal;
+          });
+        if (!pf.length) {
+          $("att").innerHTML =
+            '<div style="padding:16px;text-align:center;color:var(--success)">🎉 Todas as metas foram batidas!</div>';
+          return;
+        }
+        var ah = '<div class="ag">';
+        pf.forEach(function (f) {
+          var pp = f.goal > 0 ? Math.round((f.received / f.goal) * 100) : 0,
+            bc = pp < 50 ? "rgba(239,83,80,.2)" : "rgba(255,152,0,.2)",
+            tc = pp < 50 ? "var(--danger)" : "var(--warning)";
+          ah +=
+            '<div style="background:var(--input-bg);border-radius:10px;padding:12px;border:1px solid ' +
+            bc +
+            '"><div style="display:flex;justify-content:space-between;margin-bottom:8px;gap:8px"><span style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' +
+            esc(f.name) +
+            '</span><span style="font-size:12px;font-weight:600;color:' +
+            tc +
+            ';flex-shrink:0">' +
+            pp +
+            "%</span></div>" +
+            pb(f.received, f.goal) +
+            '<div style="margin-top:6px;font-size:11px;color:var(--text2)">Faltam <span style="color:var(--text);font-weight:600">' +
+            (f.goal - f.received) +
+            " " +
+            f.unit +
+            "</span></div></div>";
+        });
+        ah += "</div>";
+        $("att").innerHTML = ah;
+      }
+
+      // ═══ MODALS ═══
+      function om(id) {
+        $("m-" + id).classList.add("open");
+      }
+      function cm() {
+        document.querySelectorAll(".mo").forEach(function (m) {
+          m.classList.remove("open");
+        });
+      }
+      document.querySelectorAll(".mo").forEach(function (m) {
+        m.addEventListener("click", function (e) {
+          if (e.target === m) cm();
+        });
+      });
+      function fF(id) {
+        return alimentos.find(function (f) {
+          return f.id === Number(id);
+        });
+      }
+
+      function oEF(id) {
+        var f = fF(id);
+        if (!f) return;
+        $("ef-id").value = f.id;
+        $("ef-n").value = f.name;
+        $("ef-u").value = f.unit;
+        $("ef-g").value = f.goal;
+        om("edit-food");
+      }
+      function oD(id) {
+        var f = fF(id);
+        if (!f) return;
+        $("d-id").value = f.id;
+        $("dt").textContent = "Registrar Doação — " + f.name;
+        $("dl").textContent = "Quantidade (" + f.unit + ")";
+        $("di").innerHTML =
+          '<div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:var(--text2);font-size:13px">Atual</span><span style="font-weight:600">' +
+          f.received +
+          " / " +
+          f.goal +
+          " " +
+          f.unit +
+          "</span></div>" +
+          pb(f.received, f.goal, true);
+        $("d-a").value = "";
+        $("d-d").value = "";
+        om("donate");
+      }
+      function oH(id) {
+        var f = fF(id);
+        if (!f) return;
+        $("ht").textContent = "Histórico — " + f.name;
+        $("hc").innerHTML =
+          '<div class="loading"><div class="spinner"></div></div>';
+        om("history");
+        apiGet("getHistorico", { id: id })
+          .then(function (hist) {
+            if (!hist || !hist.length) {
+              $("hc").innerHTML =
+                '<div class="empty">Nenhuma doação registrada.</div>';
+              return;
+            }
+            var h = '<div style="max-height:320px;overflow-y:auto">';
+            []
+              .concat(hist)
+              .reverse()
+              .forEach(function (x) {
+                h +=
+                  '<div class="hi"><div style="min-width:0;flex:1"><span style="font-weight:600;font-size:14px">' +
+                  esc(x.donor) +
+                  '</span><div style="color:var(--text2);font-size:11px;margin-top:2px">' +
+                  fmtD(x.date) +
+                  '</div></div><span class="hb">+' +
+                  x.amount +
+                  " " +
+                  f.unit +
+                  "</span></div>";
+              });
+            var total = hist.reduce(function (s, x) {
+              return s + x.amount;
+            }, 0);
+            h +=
+              '</div><div style="margin-top:12px;padding:10px 14px;background:var(--input-bg);border-radius:8px;display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text2)">Total:</span><span style="font-weight:700">' +
+              total +
+              " " +
+              f.unit +
+              "</span></div>";
+            $("hc").innerHTML = h;
+          })
+          .catch(function (e) {
+            $("hc").innerHTML =
+              '<div class="empty" style="color:var(--danger)">Erro: ' +
+              e.message +
+              "</div>";
+          });
+      }
+
+      // ═══ SUBMITS ═══
+      function saf(b) {
+        var n = $("af-n").value.trim(),
+          u = $("af-u").value,
+          g = $("af-g").value;
+        if (!n || !g) return alert("Preencha nome e meta.");
+        setL(b, true);
+        apiPost({ action: "addAlimento", nome: n, unidade: u, meta: Number(g) })
+          .then(function (f) {
+            alimentos.push(f);
+            $("af-n").value = "";
+            $("af-g").value = "";
+            cm();
+            R();
+            toast("Alimento adicionado!", true);
+            setL(b, false);
+          })
+          .catch(function (e) {
+            alert("Erro: " + e.message);
+            setL(b, false);
+          });
+      }
+
+      function sef(b) {
+        var id = Number($("ef-id").value),
+          n = $("ef-n").value.trim(),
+          u = $("ef-u").value,
+          g = $("ef-g").value;
+        if (!n || !g) return alert("Preencha tudo.");
+        setL(b, true);
+        apiPost({
+          action: "updateAlimento",
+          id: id,
+          nome: n,
+          unidade: u,
+          meta: Number(g),
+        })
+          .then(function () {
+            var f = fF(id);
+            if (f) {
+              f.name = n;
+              f.unit = u;
+              f.goal = Number(g);
+            }
+            cm();
+            R();
+            toast("Alimento atualizado!", true);
+            setL(b, false);
+          })
+          .catch(function (e) {
+            alert("Erro: " + e.message);
+            setL(b, false);
+          });
+      }
+
+      function sd(b) {
+        var id = Number($("d-id").value),
+          a = Number($("d-a").value),
+          d = $("d-d").value.trim();
+        if (!a || a <= 0) return alert("Quantidade inválida.");
+        setL(b, true);
+        apiPost({
+          action: "registrarDoacao",
+          alimentoId: id,
+          quantidade: a,
+          doador: d,
+        })
+          .then(function (r) {
+            var f = fF(id);
+            if (f) f.received = r.newReceived;
+            cm();
+            R();
+            toast("Doação registrada!", true);
+            setL(b, false);
+          })
+          .catch(function (e) {
+            alert("Erro: " + e.message);
+            setL(b, false);
+          });
+      }
+
+      function dF(id) {
+        var f = fF(id);
+        if (!f || !confirm('Remover "' + f.name + '"?')) return;
+        apiPost({ action: "deleteAlimento", id: id })
+          .then(function () {
+            alimentos = alimentos.filter(function (x) {
+              return x.id !== id;
+            });
+            R();
+            toast("Removido!", true);
+          })
+          .catch(function (e) {
+            alert("Erro: " + e.message);
+          });
+      }
+
+      function sas(b) {
+        var n = $("as-n").value.trim(),
+          v = $("as-v").value,
+          m = $("as-m").value,
+          y = $("as-y").value.trim(),
+          d = $("as-d").value;
+        if (!n || !v) return alert("Preencha nome e valor.");
+        setL(b, true);
+        apiPost({
+          action: "addApadrinhamento",
+          nome: n,
+          valor: Number(v),
+          metodo: m,
+          jovem: y,
+          data: d,
+        })
+          .then(function (s) {
+            apadrinhamentos.push(s);
+            $("as-n").value = "";
+            $("as-v").value = "";
+            $("as-y").value = "";
+            $("as-d").value = "";
+            cm();
+            R();
+            toast("Doação registrada!", true);
+            setL(b, false);
+          })
+          .catch(function (e) {
+            alert("Erro: " + e.message);
+            setL(b, false);
+          });
+      }
+
+      function dS(id) {
+        if (!confirm("Remover esta doação?")) return;
+        apiPost({ action: "deleteApadrinhamento", id: id })
+          .then(function () {
+            apadrinhamentos = apadrinhamentos.filter(function (s) {
+              return s.id !== id;
+            });
+            R();
+            toast("Removido!", true);
+          })
+          .catch(function (e) {
+            alert("Erro: " + e.message);
+          });
+      }
+
+      function sg(b) {
+        var v = Number($("gv").value);
+        if (!v || v <= 0) return alert("Valor inválido.");
+        setL(b, true);
+        apiPost({ action: "setMetaArrecadacao", valor: v })
+          .then(function () {
+            metaArr = v;
+            cm();
+            R();
+            toast("Meta atualizada!", true);
+            setL(b, false);
+          })
+          .catch(function (e) {
+            alert("Erro: " + e.message);
+            setL(b, false);
+          });
+      }
+
+      function sbs(b) {
+        var d = $("bs-d").value,
+          q = Number($("bs-q").value),
+          p = Number($("bs-p").value),
+          ds = $("bs-ds").value.trim();
+        if (!q || !p) return alert("Preencha qtd e preço.");
+        setL(b, true);
+        apiPost({
+          action: "addBrigVenda",
+          data: d,
+          qty: q,
+          precoUnitario: p,
+          descricao: ds,
+        })
+          .then(function (s) {
+            brigVendas.push(s);
+            $("bs-q").value = "";
+            $("bs-ds").value = "";
+            $("bs-d").value = "";
+            cm();
+            R();
+            toast("Venda lançada!", true);
+            setL(b, false);
+          })
+          .catch(function (e) {
+            alert("Erro: " + e.message);
+            setL(b, false);
+          });
+      }
+
+      function sbc(b) {
+        var d = $("bc-d").value,
+          v = Number($("bc-v").value),
+          ds = $("bc-ds").value.trim();
+        if (!v) return alert("Preencha o valor.");
+        setL(b, true);
+        apiPost({ action: "addBrigCusto", data: d, valor: v, descricao: ds })
+          .then(function (c) {
+            brigCustos.push(c);
+            $("bc-v").value = "";
+            $("bc-ds").value = "";
+            $("bc-d").value = "";
+            cm();
+            R();
+            toast("Custo lançado!", true);
+            setL(b, false);
+          })
+          .catch(function (e) {
+            alert("Erro: " + e.message);
+            setL(b, false);
+          });
+      }
+
+      function dBS(id) {
+        if (!confirm("Remover esta venda?")) return;
+        apiPost({ action: "deleteBrigVenda", id: id })
+          .then(function () {
+            brigVendas = brigVendas.filter(function (x) {
+              return x.id !== id;
+            });
+            R();
+            toast("Removido!", true);
+          })
+          .catch(function (e) {
+            alert("Erro: " + e.message);
+          });
+      }
+
+      function dBC(id) {
+        if (!confirm("Remover este custo?")) return;
+        apiPost({ action: "deleteBrigCusto", id: id })
+          .then(function () {
+            brigCustos = brigCustos.filter(function (x) {
+              return x.id !== id;
+            });
+            R();
+            toast("Removido!", true);
+          })
+          .catch(function (e) {
+            alert("Erro: " + e.message);
+          });
+      }
+
+      function sbg(b) {
+        var v = Number($("bgv").value);
+        if (!v || v <= 0) return alert("Valor inválido.");
+        setL(b, true);
+        apiPost({ action: "setMetaBrigadeiros", valor: v })
+          .then(function () {
+            metaBrig = v;
+            cm();
+            R();
+            toast("Meta atualizada!", true);
+            setL(b, false);
+          })
+          .catch(function (e) {
+            alert("Erro: " + e.message);
+            setL(b, false);
+          });
+      }
+    </script>
+  </body>
+</html>
