@@ -22,6 +22,8 @@
         --warning-bg: rgba(255, 152, 0, 0.12);
         --danger: #ef5350;
         --danger-bg: rgba(239, 83, 80, 0.12);
+        --purple: #9c7cfa;
+        --purple-bg: rgba(156, 124, 250, 0.12);
         --choco-bg: rgba(139, 69, 19, 0.15);
         --choco-text: #d4915c;
         --text: #f5efe6;
@@ -48,9 +50,14 @@
         border-radius: 99px;
       }
       input:focus,
-      select:focus {
+      select:focus,
+      textarea:focus {
         border-color: var(--accent) !important;
         outline: none;
+      }
+      textarea {
+        font-family: inherit;
+        resize: vertical;
       }
       button {
         font-family: inherit;
@@ -58,6 +65,9 @@
       }
       button:hover:not(:disabled) {
         filter: brightness(1.1);
+      }
+      a {
+        color: var(--purple);
       }
       @keyframes fadeIn {
         from {
@@ -82,6 +92,7 @@
           transform: rotate(360deg);
         }
       }
+
       .header {
         padding: 24px 32px 0;
         max-width: 1100px;
@@ -127,6 +138,7 @@
         margin: 0 auto;
         padding: 24px 32px 60px;
       }
+
       .stats-row {
         display: flex;
         gap: 14px;
@@ -159,6 +171,7 @@
         font-size: 12px;
         margin-top: 4px;
       }
+
       .controls {
         display: flex;
         gap: 10px;
@@ -180,6 +193,7 @@
         flex: 1 1 140px;
         min-width: 100px;
       }
+
       .btn {
         padding: 10px 18px;
         border-radius: 10px;
@@ -218,6 +232,11 @@
         color: var(--choco-text);
         font-weight: 600;
       }
+      .btn-purple {
+        background: var(--purple-bg);
+        color: var(--purple);
+        font-weight: 600;
+      }
       .btn-sm {
         padding: 6px 10px;
         font-size: 12px;
@@ -226,6 +245,7 @@
         opacity: 0.5;
         cursor: not-allowed;
       }
+
       .pw {
         width: 100%;
         height: 6px;
@@ -241,6 +261,7 @@
       .pw.lg {
         height: 10px;
       }
+
       .table {
         background: var(--card);
         border: 1px solid var(--border);
@@ -270,11 +291,15 @@
       .t-row:last-child {
         border-bottom: none;
       }
+
       .food-cols {
         grid-template-columns: 2.2fr 0.8fr 0.8fr 120px 120px;
       }
       .sponsor-cols {
         grid-template-columns: 2fr 1fr 1fr 1.2fr 70px;
+      }
+      .part-cols {
+        grid-template-columns: 2fr 0.8fr 0.8fr 0.8fr 0.6fr 100px;
       }
       .bs-cols {
         grid-template-columns: 1.2fr 0.7fr 0.8fr 1fr 1.2fr 60px;
@@ -282,6 +307,7 @@
       .bc-cols {
         grid-template-columns: 1.2fr 2fr 1fr 60px;
       }
+
       .dot {
         width: 8px;
         height: 8px;
@@ -303,7 +329,9 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        flex-shrink: 0;
       }
+
       .cl {
         display: none;
         flex-direction: column;
@@ -311,7 +339,8 @@
       }
       .fc,
       .sc,
-      .bc {
+      .bc,
+      .pc {
         background: var(--card);
         border: 1px solid var(--border);
         border-radius: 12px;
@@ -324,6 +353,7 @@
         padding: 20px;
         margin-bottom: 22px;
       }
+
       .mo {
         position: fixed;
         inset: 0;
@@ -371,6 +401,7 @@
         padding: 4px;
         cursor: pointer;
       }
+
       .fg {
         margin-bottom: 14px;
       }
@@ -382,7 +413,8 @@
         font-weight: 500;
       }
       .fg input,
-      .fg select {
+      .fg select,
+      .fg textarea {
         width: 100%;
         padding: 10px 14px;
         background: var(--input-bg);
@@ -391,6 +423,9 @@
         color: var(--text);
         font-size: 14px;
         outline: none;
+      }
+      .fg textarea {
+        min-height: 60px;
       }
       .fr {
         display: grid;
@@ -403,6 +438,7 @@
         justify-content: flex-end;
         margin-top: 8px;
       }
+
       .ib2 {
         background: var(--input-bg);
         border-radius: 10px;
@@ -430,6 +466,7 @@
         font-size: 14px;
         white-space: nowrap;
       }
+
       .cg {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -455,6 +492,7 @@
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         gap: 10px;
       }
+
       .loading {
         text-align: center;
         padding: 60px 20px;
@@ -475,6 +513,7 @@
         color: var(--text2);
         font-size: 14px;
       }
+
       .tb {
         display: flex;
         background: var(--input-bg);
@@ -496,6 +535,7 @@
         color: var(--choco-text);
         font-weight: 600;
       }
+
       .sm {
         display: flex;
         gap: 12px;
@@ -515,6 +555,9 @@
         font-weight: 600;
         text-transform: uppercase;
         margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
       }
       .sm .sv {
         font-size: 20px;
@@ -526,6 +569,7 @@
         color: var(--text2);
         margin-top: 2px;
       }
+
       .tr {
         padding: 12px 18px;
         border-top: 1px solid var(--border);
@@ -533,6 +577,30 @@
         justify-content: space-between;
         font-size: 14px;
       }
+
+      /* Part detail grid */
+      .pdg {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .pdi {
+        background: var(--input-bg);
+        border-radius: 10px;
+        padding: 12px;
+        border: 1px solid var(--border);
+      }
+      .pdi .pl {
+        font-size: 11px;
+        color: var(--text2);
+        margin-bottom: 4px;
+      }
+      .pdi .pv {
+        font-weight: 600;
+        font-size: 14px;
+      }
+
       .toast {
         position: fixed;
         bottom: 20px;
@@ -558,6 +626,7 @@
         color: var(--danger);
         border: 1px solid rgba(239, 83, 80, 0.3);
       }
+
       @media (max-width: 768px) {
         .header,
         .main {
@@ -590,14 +659,13 @@
         .tl {
           display: none;
         }
+        .pdg {
+          grid-template-columns: 1fr !important;
+        }
       }
     </style>
   </head>
   <body>
-    <!-- ══════════════════════════════════════ -->
-    <!--  ⚠️  CONFIGURE A URL DA SUA API AQUI  -->
-    <!-- ══════════════════════════════════════ -->
-
     <div id="toast" class="toast"></div>
 
     <header class="header">
@@ -609,7 +677,13 @@
           margin-bottom: 4px;
         "
       >
-        <img src="images/acamps-logo.png" width="36" height="36" alt="Logo Acamps" style="object-fit:contain;" />
+        <img
+          src="images/acamps-logo.png"
+          width="36"
+          height="36"
+          alt="Logo Acamps"
+          style="object-fit: contain"
+        />
         <div>
           <h1>Acampamento de Jovens</h1>
           <p>Controle de Doações · 2026</p>
@@ -628,7 +702,14 @@
           onclick="go('apadrinhamento')"
           id="tab-apadrinhamento"
         >
-          💰 <span class="tl">Apadrinhamento</span>
+          💰 <span class="tl">Doações</span>
+        </button>
+        <button
+          class="tab-btn"
+          onclick="go('apadrinhados')"
+          id="tab-apadrinhados"
+        >
+          👥 <span class="tl">Apadrinhados</span>
         </button>
         <button
           class="tab-btn"
@@ -648,6 +729,8 @@
         <div class="spinner"></div>
         <p>Carregando dados...</p>
       </div>
+
+      <!-- ALIMENTOS -->
       <div id="page-alimentos" style="display: none">
         <div class="stats-row" id="fs"></div>
         <div class="controls">
@@ -656,17 +739,21 @@
             placeholder="Buscar alimento..."
             oninput="ff()"
             id="fsearch"
-          /><select class="filter-select" onchange="ff()" id="ffilter">
+          />
+          <select class="filter-select" onchange="ff()" id="ffilter">
             <option value="all">Todos</option>
             <option value="done">✅ Completos</option>
-            <option value="pending">⏳ Pendentes</option></select
-          ><button class="btn btn-primary" onclick="om('add-food')">
+            <option value="pending">⏳ Pendentes</option>
+          </select>
+          <button class="btn btn-primary" onclick="om('add-food')">
             + <span class="hm">Novo Alimento</span>
           </button>
         </div>
         <div class="table dt" id="ftable"></div>
         <div class="cl" id="fcards"></div>
       </div>
+
+      <!-- APADRINHAMENTO / DOAÇÕES -->
       <div id="page-apadrinhamento" style="display: none">
         <div class="gb" id="gban"></div>
         <div
@@ -685,7 +772,7 @@
               font-weight: 400;
               font-size: 16px;
             "
-            id="sc"
+            id="scount"
           >
             Doações (0)
           </h3>
@@ -696,6 +783,33 @@
         <div class="table dt" id="stable"></div>
         <div class="cl" id="scards"></div>
       </div>
+
+      <!-- APADRINHADOS -->
+      <div id="page-apadrinhados" style="display: none">
+        <div class="gb" id="pban"></div>
+        <div class="controls">
+          <input
+            class="search-input"
+            placeholder="Buscar participante..."
+            oninput="rApad()"
+            id="psearch"
+          />
+          <select class="filter-select" onchange="rApad()" id="pfilter">
+            <option value="all">Todos</option>
+            <option value="confirmado">✅ Confirmados</option>
+            <option value="pendente">⏳ Pendentes</option>
+            <option value="desistiu">❌ Desistiram</option>
+            <option value="need">🎯 Precisam apoio</option>
+          </select>
+          <button class="btn btn-purple" onclick="om('add-part')">
+            + <span class="hm">Novo Participante</span>
+          </button>
+        </div>
+        <div class="table dt" id="ptable"></div>
+        <div class="cl" id="pcards"></div>
+      </div>
+
+      <!-- BRIGADEIROS -->
       <div id="page-brigadeiros" style="display: none">
         <div class="gb" id="bban"></div>
         <div
@@ -709,8 +823,9 @@
         >
           <div class="tb">
             <button class="tbb active" id="bt-sales" onclick="bv('sales')">
-              📦 Vendas</button
-            ><button class="tbb" id="bt-costs" onclick="bv('costs')">
+              📦 Vendas
+            </button>
+            <button class="tbb" id="bt-costs" onclick="bv('costs')">
               💸 Custos
             </button>
           </div>
@@ -721,6 +836,8 @@
         </div>
         <div id="bcont"></div>
       </div>
+
+      <!-- DASHBOARD -->
       <div id="page-dashboard" style="display: none">
         <div class="stats-row" id="ds"></div>
         <div class="cg">
@@ -750,7 +867,9 @@
       </div>
     </main>
 
-    <!-- MODALS -->
+    <!-- ═══ MODALS ═══ -->
+
+    <!-- Add Food -->
     <div class="mo" id="m-add-food">
       <div class="md" onclick="event.stopPropagation()">
         <div class="mt">
@@ -787,6 +906,7 @@
       </div>
     </div>
 
+    <!-- Edit Food -->
     <div class="mo" id="m-edit-food">
       <div class="md" onclick="event.stopPropagation()">
         <div class="mt">
@@ -818,6 +938,7 @@
       </div>
     </div>
 
+    <!-- Donate -->
     <div class="mo" id="m-donate">
       <div class="md" onclick="event.stopPropagation()">
         <div class="mt">
@@ -843,6 +964,7 @@
       </div>
     </div>
 
+    <!-- History -->
     <div class="mo" id="m-history">
       <div class="md wide" onclick="event.stopPropagation()">
         <div class="mt">
@@ -853,6 +975,7 @@
       </div>
     </div>
 
+    <!-- Add Sponsor -->
     <div class="mo" id="m-add-sponsor">
       <div class="md" onclick="event.stopPropagation()">
         <div class="mt">
@@ -891,6 +1014,7 @@
       </div>
     </div>
 
+    <!-- Edit Goal -->
     <div class="mo" id="m-edit-goal">
       <div class="md" onclick="event.stopPropagation()">
         <div class="mt">
@@ -913,6 +1037,7 @@
       </div>
     </div>
 
+    <!-- Add Brig Sale -->
     <div class="mo" id="m-add-brig-sale">
       <div class="md" onclick="event.stopPropagation()">
         <div class="mt">
@@ -979,6 +1104,7 @@
       </div>
     </div>
 
+    <!-- Add Brig Cost -->
     <div class="mo" id="m-add-brig-cost">
       <div class="md" onclick="event.stopPropagation()">
         <div class="mt">
@@ -1009,6 +1135,7 @@
       </div>
     </div>
 
+    <!-- Edit Brig Goal -->
     <div class="mo" id="m-edit-brig-goal">
       <div class="md" onclick="event.stopPropagation()">
         <div class="mt">
@@ -1031,32 +1158,164 @@
       </div>
     </div>
 
+    <!-- Add Participant -->
+    <div class="mo" id="m-add-part">
+      <div class="md wide" onclick="event.stopPropagation()">
+        <div class="mt">
+          <h3>👥 Novo Participante</h3>
+          <button class="cb" onclick="cm()">✕</button>
+        </div>
+        <div class="fg">
+          <label>Nome completo</label
+          ><input id="ap-n" placeholder="Nome do jovem" />
+        </div>
+        <div class="fr">
+          <div class="fg">
+            <label>Telefone</label
+            ><input id="ap-p" placeholder="(61) 99999-9999" />
+          </div>
+          <div class="fg">
+            <label>Quanto pode pagar (R$)</label
+            ><input id="ap-c" type="number" min="0" placeholder="0" />
+          </div>
+        </div>
+        <div class="fr">
+          <div class="fg">
+            <label>Status da Inscrição</label
+            ><select id="ap-s">
+              <option value="confirmado">Confirmado</option>
+              <option value="pendente">Pendente</option>
+              <option value="desistiu">Desistiu</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Data da inscrição</label><input id="ap-d" type="date" />
+          </div>
+        </div>
+        <div class="fg">
+          <label>Observações</label
+          ><textarea
+            id="ap-o"
+            placeholder="Ex: Vai pagar na semana do evento..."
+          ></textarea>
+        </div>
+        <div class="fg">
+          <label>Link do comprovante (opcional)</label
+          ><input id="ap-r" placeholder="https://drive.google.com/..." />
+        </div>
+        <div class="fa">
+          <button class="btn btn-secondary" onclick="cm()">Cancelar</button
+          ><button class="btn btn-purple" onclick="subAddPart(this)">
+            Cadastrar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Participant -->
+    <div class="mo" id="m-edit-part">
+      <div class="md wide" onclick="event.stopPropagation()">
+        <div class="mt">
+          <h3>✏️ Editar Participante</h3>
+          <button class="cb" onclick="cm()">✕</button>
+        </div>
+        <input type="hidden" id="ep-id" />
+        <div class="fg"><label>Nome completo</label><input id="ep-n" /></div>
+        <div class="fr">
+          <div class="fg"><label>Telefone</label><input id="ep-p" /></div>
+          <div class="fg">
+            <label>Quanto pode pagar (R$)</label
+            ><input id="ep-c" type="number" min="0" />
+          </div>
+        </div>
+        <div class="fr">
+          <div class="fg">
+            <label>Status da Inscrição</label
+            ><select id="ep-s">
+              <option value="confirmado">Confirmado</option>
+              <option value="pendente">Pendente</option>
+              <option value="desistiu">Desistiu</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Data da inscrição</label><input id="ep-d" type="date" />
+          </div>
+        </div>
+        <div class="fg">
+          <label>Observações</label><textarea id="ep-o"></textarea>
+        </div>
+        <div class="fg">
+          <label>Link do comprovante (opcional)</label><input id="ep-r" />
+        </div>
+        <div class="fa">
+          <button class="btn btn-secondary" onclick="cm()">Cancelar</button
+          ><button class="btn btn-purple" onclick="subEditPart(this)">
+            Salvar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Part Detail -->
+    <div class="mo" id="m-part-detail">
+      <div class="md wide" onclick="event.stopPropagation()">
+        <div class="mt">
+          <h3 id="pd-title">Detalhes</h3>
+          <button class="cb" onclick="cm()">✕</button>
+        </div>
+        <div id="pd-content"></div>
+      </div>
+    </div>
+
+    <!-- Edit Inscription Value -->
+    <div class="mo" id="m-edit-insc">
+      <div class="md" onclick="event.stopPropagation()">
+        <div class="mt">
+          <h3>Valor da Inscrição</h3>
+          <button class="cb" onclick="cm()">✕</button>
+        </div>
+        <p style="font-size: 13px; color: var(--text2); margin-bottom: 16px">
+          Recalcula automaticamente quanto cada jovem precisa de apadrinhamento.
+        </p>
+        <div class="fg">
+          <label>Valor (R$)</label><input id="iv" type="number" min="1" />
+        </div>
+        <div class="fa">
+          <button class="btn btn-secondary" onclick="cm()">Cancelar</button
+          ><button class="btn btn-primary" onclick="subInsc(this)">
+            Salvar
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script>
-
-      var API_URL = "https://script.google.com/macros/s/AKfycby1yH3GplwcrNW5pB0e7xsXx6qjLkP8uiYjK7yTjnuf-9PNZqx4FOT71NW9n9cQR14/exec";
-
+      var API_URL =
+        "https://script.google.com/macros/s/AKfycbwwAP-vlU1JeaDkm3x2LuhBKe3BHtqqWCv4xKYQ4R39ymaJ3a9sWQPEIgvZEUqoB6oB/exec";
 
       // ═══ STATE ═══
       var alimentos = [],
         apadrinhamentos = [],
         brigVendas = [],
         brigCustos = [],
-        metaArr = 5000,
+        participantes = [];
+      var metaArr = 5000,
         metaBrig = 3000,
-        curTab = "alimentos",
+        valorInsc = 200;
+      var curTab = "alimentos",
         curBV = "sales";
       var $ = function (id) {
         return document.getElementById(id);
       };
       var F = function (v) {
-        return v.toLocaleString("pt-BR", {
+        return (v || 0).toLocaleString("pt-BR", {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         });
       };
       function esc(s) {
         var d = document.createElement("div");
-        d.textContent = s;
+        d.textContent = s || "";
         return d.innerHTML;
       }
       function fmtD(v) {
@@ -1065,6 +1324,23 @@
         if (isNaN(d)) return v;
         return d.toLocaleDateString("pt-BR", { timeZone: "UTC" });
       }
+      function fmtPhone(p) {
+        if (!p) return "";
+        var s = String(p).replace(/\D/g, "");
+        if (s.length === 11)
+          return "(" + s.slice(0, 2) + ") " + s.slice(2, 7) + "-" + s.slice(7);
+        return p;
+      }
+      var statusC = {
+        confirmado: "var(--success)",
+        pendente: "var(--warning)",
+        desistiu: "var(--danger)",
+      };
+      var statusL = {
+        confirmado: "Confirmado",
+        pendente: "Pendente",
+        desistiu: "Desistiu",
+      };
 
       // ═══ API ═══
       function apiGet(action, params) {
@@ -1076,7 +1352,6 @@
           return r.json();
         });
       }
-
       function apiPost(body) {
         return fetch(API_URL, {
           method: "POST",
@@ -1086,7 +1361,6 @@
           return r.json();
         });
       }
-
       function toast(msg, ok) {
         var el = $("toast");
         el.textContent = msg;
@@ -1095,7 +1369,6 @@
           el.className = "toast";
         }, 3000);
       }
-
       function setL(b, l) {
         b.disabled = l;
         if (l) b.dataset.o = b.textContent;
@@ -1110,8 +1383,10 @@
             apadrinhamentos = d.apadrinhamentos || [];
             brigVendas = d.brigVendas || [];
             brigCustos = d.brigCustos || [];
+            participantes = d.participantes || [];
             metaArr = d.metaArrecadacao || 5000;
             metaBrig = d.metaBrigadeiros || 3000;
+            valorInsc = d.valorInscricao || 200;
             $("loading").style.display = "none";
             R();
             go("alimentos");
@@ -1125,20 +1400,24 @@
       // ═══ TABS ═══
       function go(t) {
         curTab = t;
-        ["alimentos", "apadrinhamento", "brigadeiros", "dashboard"].forEach(
-          function (x) {
-            $("page-" + x).style.display = x === t ? "block" : "none";
-            $("tab-" + x).className = "tab-btn" + (x === t ? " active" : "");
-          },
-        );
+        [
+          "alimentos",
+          "apadrinhamento",
+          "apadrinhados",
+          "brigadeiros",
+          "dashboard",
+        ].forEach(function (x) {
+          $("page-" + x).style.display = x === t ? "block" : "none";
+          $("tab-" + x).className = "tab-btn" + (x === t ? " active" : "");
+        });
         if (t === "dashboard") rDash();
       }
-
       function R() {
         rFS();
         rFT();
         rGB();
         rST();
+        rApad();
         rBB();
         rBC();
         if (curTab === "dashboard") rDash();
@@ -1163,7 +1442,6 @@
           '"></div></div>'
         );
       }
-
       function sc(i, l, v, s, c) {
         return (
           '<div class="stat-card"><div class="stat-label">' +
@@ -1179,7 +1457,6 @@
           "</div></div>"
         );
       }
-
       function ib(bg, c, fn, icon) {
         return (
           '<button class="ib" style="background:' +
@@ -1192,6 +1469,48 @@
           icon +
           "</button>"
         );
+      }
+
+      // ═══ COMPUTED ═══
+      function comp() {
+        var totalSp = apadrinhamentos.reduce(function (s, d) {
+          return s + d.amount;
+        }, 0);
+        var bRev = brigVendas.reduce(function (s, v) {
+          return s + v.qty * v.unitPrice;
+        }, 0);
+        var bCost = brigCustos.reduce(function (s, c) {
+          return s + c.amount;
+        }, 0);
+        var bProfit = bRev - bCost;
+        var actParts = participantes.filter(function (p) {
+          return p.status !== "desistiu";
+        });
+        var totalNeed = actParts.reduce(function (s, p) {
+          return s + Math.max(valorInsc - p.canPay, 0);
+        }, 0);
+        var partsNeed = actParts.filter(function (p) {
+          return p.canPay < valorInsc;
+        }).length;
+        var partsFull = actParts.filter(function (p) {
+          return p.canPay >= valorInsc;
+        }).length;
+        var fDone = alimentos.filter(function (f) {
+          return f.received >= f.goal;
+        }).length;
+        return {
+          totalSp: totalSp,
+          bRev: bRev,
+          bCost: bCost,
+          bProfit: bProfit,
+          actParts: actParts,
+          totalNeed: totalNeed,
+          partsNeed: partsNeed,
+          partsFull: partsFull,
+          fDone: fDone,
+          grand: totalSp + Math.max(bProfit, 0),
+          saldo: totalSp + Math.max(bProfit, 0) - totalNeed,
+        };
       }
 
       // ═══ ALIMENTOS ═══
@@ -1251,7 +1570,7 @@
           c = "";
         if (!foods.length) {
           h += '<div class="empty">Nenhum alimento encontrado</div>';
-          c = '<div class="empty">Nenhum alimento encontrado</div>';
+          c = h;
         }
         foods.forEach(function (f) {
           var dn = f.received >= f.goal,
@@ -1339,7 +1658,7 @@
         $("fcards").innerHTML = c;
       }
 
-      // ═══ SPONSORS ═══
+      // ═══ DOAÇÕES (SPONSORS) ═══
       function rGB() {
         var t = apadrinhamentos.reduce(function (s, d) {
             return s + d.amount;
@@ -1364,7 +1683,7 @@
 
       function rST() {
         var l = [].concat(apadrinhamentos).reverse();
-        $("sc").textContent = "Doações (" + apadrinhamentos.length + ")";
+        $("scount").textContent = "Doações (" + apadrinhamentos.length + ")";
         var h =
             '<div class="t-hdr sponsor-cols"><span>Doador</span><span style="text-align:center">Valor</span><span style="text-align:center">Método</span><span>Jovem</span><span style="text-align:center">Ações</span></div>',
           c = "";
@@ -1412,6 +1731,202 @@
         });
         $("stable").innerHTML = h;
         $("scards").innerHTML = c;
+      }
+
+      // ═══ APADRINHADOS ═══
+      function rApad() {
+        var c = comp(),
+          vi = valorInsc,
+          pt = participantes;
+        var search = ($("psearch") ? $("psearch").value : "").toLowerCase();
+        var filter = $("pfilter") ? $("pfilter").value : "all";
+        var desistidos = pt.filter(function (p) {
+          return p.status === "desistiu";
+        }).length;
+
+        var filtered = pt
+          .filter(function (p) {
+            return p.name.toLowerCase().includes(search);
+          })
+          .filter(function (p) {
+            if (filter === "confirmado") return p.status === "confirmado";
+            if (filter === "pendente") return p.status === "pendente";
+            if (filter === "desistiu") return p.status === "desistiu";
+            if (filter === "need")
+              return p.status !== "desistiu" && p.canPay < vi;
+            return true;
+          })
+          .sort(function (a, b) {
+            if (a.status === "desistiu" && b.status !== "desistiu") return 1;
+            if (a.status !== "desistiu" && b.status === "desistiu") return -1;
+            return a.name.localeCompare(b.name);
+          });
+
+        // Banner
+        var h =
+          '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px"><div><h3 style="font-family:\'DM Serif Display\',serif;font-weight:400;font-size:17px;margin-bottom:3px">👥 Gestão de Apadrinhados</h3><span style="color:var(--text2);font-size:12px">Inscrição: R$ ' +
+          F(vi) +
+          " por jovem <button onclick=\"om('edit-insc');$('iv').value=valorInsc\" style=\"background:rgba(255,255,255,.06);border:none;border-radius:4px;padding:2px 6px;color:var(--text2);cursor:pointer;font-size:11px\">✎ editar</button></span></div></div>";
+        h += '<div class="sm" style="margin-top:0">';
+        h +=
+          '<div><div class="sl">💰 Total Disponível</div><div class="sv" style="color:var(--success)">R$ ' +
+          F(c.totalSp + Math.max(c.bProfit, 0)) +
+          '</div><div class="ss">Doações: R$ ' +
+          F(c.totalSp) +
+          (c.bProfit > 0 ? " + Brigadeiros: R$ " + F(c.bProfit) : "") +
+          "</div></div>";
+        h +=
+          '<div><div class="sl">🎯 Total Necessário</div><div class="sv" style="color:var(--warning)">R$ ' +
+          F(c.totalNeed) +
+          '</div><div class="ss">' +
+          c.partsNeed +
+          " jovens precisam</div></div>";
+        h +=
+          '<div><div class="sl">' +
+          (c.saldo >= 0 ? "✅" : "⚠️") +
+          ' Saldo</div><div class="sv" style="color:' +
+          (c.saldo >= 0 ? "var(--success)" : "var(--danger)") +
+          '">R$ ' +
+          F(c.saldo) +
+          '</div><div class="ss">' +
+          (c.saldo >= 0 ? "Doações cobrem" : "Faltam doações") +
+          "</div></div>";
+        h += "</div>";
+        h += pb(c.totalSp + Math.max(c.bProfit, 0), c.totalNeed, true);
+        h +=
+          '<div style="display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--text2)"><span>' +
+          c.actParts.length +
+          " ativos · " +
+          desistidos +
+          " desistiram</span><span>" +
+          c.partsFull +
+          " integrais · " +
+          c.partsNeed +
+          " precisam apoio</span></div>";
+        $("pban").innerHTML = h;
+
+        // Desktop table
+        var th =
+          '<div class="t-hdr part-cols"><span>Participante</span><span style="text-align:center">Pode Pagar</span><span style="text-align:center">Precisa</span><span style="text-align:center">Status Inscrição</span><span style="text-align:center">Comprov.</span><span style="text-align:center">Ações</span></div>';
+        if (!filtered.length)
+          th += '<div class="empty">Nenhum participante encontrado</div>';
+        filtered.forEach(function (p) {
+          var need = Math.max(vi - p.canPay, 0),
+            isDes = p.status === "desistiu";
+          th +=
+            '<div class="t-row part-cols" style="opacity:' +
+            (isDes ? 0.5 : 1) +
+            '">';
+          th +=
+            '<div><span style="font-weight:600;font-size:14px">' +
+            esc(p.name) +
+            '</span><div style="font-size:11px;color:var(--text2);margin-top:1px">' +
+            esc(fmtPhone(p.phone)) +
+            "</div>" +
+            (p.notes
+              ? '<div style="font-size:10px;color:var(--text2);margin-top:2px;font-style:italic;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' +
+                esc(p.notes) +
+                "</div>"
+              : "") +
+            "</div>";
+          th +=
+            '<span style="text-align:center;font-weight:600;font-size:14px;color:' +
+            (p.canPay >= vi ? "var(--success)" : "var(--text)") +
+            '">R$ ' +
+            F(p.canPay) +
+            "</span>";
+          th +=
+            '<span style="text-align:center;font-weight:600;font-size:14px;color:' +
+            (need > 0 ? "var(--warning)" : "var(--success)") +
+            '">' +
+            (need > 0 ? "R$ " + F(need) : "—") +
+            "</span>";
+          th +=
+            '<div style="text-align:center"><span class="badge" style="background:' +
+            statusC[p.status] +
+            "20;color:" +
+            statusC[p.status] +
+            '">' +
+            statusL[p.status] +
+            "</span></div>";
+          th +=
+            '<div style="text-align:center">' +
+            (p.receiptUrl
+              ? '<a href="' +
+                esc(p.receiptUrl) +
+                '" target="_blank" style="font-size:11px;font-weight:600">📎 Ver</a>'
+              : '<span style="color:var(--text2);font-size:11px">—</span>') +
+            "</div>";
+          th +=
+            '<div style="display:flex;gap:4px;justify-content:center">' +
+            ib(
+              "rgba(255,255,255,.05)",
+              "var(--text2)",
+              "showPart(" + p.id + ")",
+              "👁",
+            ) +
+            ib(
+              "rgba(255,255,255,.05)",
+              "var(--text2)",
+              "oEP(" + p.id + ")",
+              "✎",
+            ) +
+            ib("var(--danger-bg)", "var(--danger)", "dP(" + p.id + ")", "✕") +
+            "</div></div>";
+        });
+        $("ptable").innerHTML = th;
+
+        // Mobile cards
+        var mc = "";
+        if (!filtered.length)
+          mc = '<div class="empty">Nenhum participante</div>';
+        filtered.forEach(function (p) {
+          var need = Math.max(vi - p.canPay, 0);
+          mc +=
+            '<div class="pc" style="opacity:' +
+            (p.status === "desistiu" ? 0.5 : 1) +
+            '">';
+          mc +=
+            '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:8px"><div style="flex:1;min-width:0"><span style="font-weight:600;font-size:15px">' +
+            esc(p.name) +
+            '</span><div style="font-size:11px;color:var(--text2);margin-top:1px">' +
+            esc(fmtPhone(p.phone)) +
+            '</div></div><span class="badge" style="background:' +
+            statusC[p.status] +
+            "20;color:" +
+            statusC[p.status] +
+            ';flex-shrink:0">' +
+            statusL[p.status] +
+            "</span></div>";
+          mc +=
+            '<div style="display:flex;gap:16px;margin-bottom:8px;font-size:13px"><div><span style="color:var(--text2);font-size:11px">Pode pagar</span><div style="font-weight:600;color:' +
+            (p.canPay >= vi ? "var(--success)" : "var(--text)") +
+            '">R$ ' +
+            F(p.canPay) +
+            '</div></div><div><span style="color:var(--text2);font-size:11px">Precisa</span><div style="font-weight:600;color:' +
+            (need > 0 ? "var(--warning)" : "var(--ok)") +
+            '">' +
+            (need > 0 ? "R$ " + F(need) : "—") +
+            "</div></div>" +
+            (p.receiptUrl
+              ? '<div><span style="color:var(--text2);font-size:11px">Comprov.</span><div style="color:var(--purple);font-weight:600;font-size:12px">✓ Enviado</div></div>'
+              : "") +
+            "</div>";
+          if (p.notes)
+            mc +=
+              '<div style="font-size:11px;color:var(--text2);font-style:italic;margin-bottom:8px">' +
+              esc(p.notes) +
+              "</div>";
+          mc +=
+            '<div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-ghost btn-sm" onclick="showPart(' +
+            p.id +
+            ')">👁 Detalhes</button><button class="btn btn-ghost btn-sm" onclick="oEP(' +
+            p.id +
+            ')">✎ Editar</button><button class="btn btn-danger btn-sm" onclick="dP(' +
+            p.id +
+            ')">✕</button></div></div>';
+        });
+        $("pcards").innerHTML = mc;
       }
 
       // ═══ BRIGADEIROS ═══
@@ -1591,18 +2106,13 @@
 
       // ═══ DASHBOARD ═══
       function rDash() {
-        var t = alimentos.length,
-          dn = alimentos.filter(function (f) {
-            return f.received >= f.goal;
-          }).length,
+        var c = comp(),
+          t = alimentos.length,
+          dn = c.fDone,
           pn = t - dn;
-        var tm = apadrinhamentos.reduce(function (s, d) {
-            return s + d.amount;
-          }, 0),
-          sp = Math.min((tm / metaArr) * 100, 100);
+        var spPct = Math.min((c.totalSp / metaArr) * 100, 100);
         var st = bst(),
-          gr = tm + Math.max(st.pr, 0),
-          bp = metaBrig > 0 ? Math.min((st.pr / metaBrig) * 100, 100) : 0;
+          bPct = metaBrig > 0 ? Math.min((st.pr / metaBrig) * 100, 100) : 0;
         $("ds").innerHTML =
           sc(
             "📦",
@@ -1613,42 +2123,42 @@
           ) +
           sc(
             "💰",
-            "Apadrinhamento",
-            "R$ " + F(tm),
-            Math.round(sp) + "% da meta",
+            "Doações",
+            "R$ " + F(c.totalSp),
+            Math.round(spPct) + "% da meta",
             "var(--success)",
           ) +
           sc(
-            "🍫",
-            "Brigadeiros",
-            "R$ " + F(st.pr),
-            Math.round(Math.max(bp, 0)) + "% da meta",
-            st.pr >= 0 ? "var(--choco-text)" : "var(--danger)",
+            "👥",
+            "Apadrinhados",
+            c.actParts.length + " jovens",
+            c.partsNeed + " precisam apoio",
+            "var(--purple)",
           ) +
           sc(
             "🏆",
             "Total Arrecadado",
-            "R$ " + F(gr),
-            "Apadrinhamento + Brigadeiros",
+            "R$ " + F(c.grand),
+            "Doações + Brigadeiros",
             "var(--success)",
           );
-        var mx = Math.max.apply(
-          null,
-          alimentos.map(function (f) {
-            return Math.max(f.goal, f.received);
-          }),
-        );
-        if (!mx) mx = 1;
+        var mx =
+          Math.max.apply(
+            null,
+            alimentos.map(function (f) {
+              return Math.max(f.goal, f.received);
+            }),
+          ) || 1;
         var bh = "";
         alimentos.forEach(function (f) {
           var rH = (f.received / mx) * 200,
             gH = (f.goal / mx) * 200,
-            c = f.received >= f.goal ? "var(--success)" : "var(--accent)";
+            cl = f.received >= f.goal ? "var(--success)" : "var(--accent)";
           bh +=
             '<div style="flex:1;min-width:30px;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="display:flex;gap:2px;align-items:flex-end;height:200px"><div style="width:14px;height:' +
             rH +
             "px;background:" +
-            c +
+            cl +
             ';border-radius:3px 3px 0 0;transition:height .5s"></div><div style="width:14px;height:' +
             gH +
             'px;background:rgba(255,255,255,.08);border-radius:3px 3px 0 0"></div></div><span style="font-size:9px;color:var(--text2);text-align:center;max-width:50px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' +
@@ -1658,7 +2168,12 @@
         $("bar").innerHTML = bh;
         var fh = "";
         [
-          { l: "Apadrinhamento", v: tm, m: metaArr, c: "var(--success)" },
+          {
+            l: "Apadrinhamento",
+            v: c.totalSp,
+            m: metaArr,
+            c: "var(--success)",
+          },
           {
             l: "Brigadeiros (líquido)",
             v: Math.max(st.pr, 0),
@@ -1684,7 +2199,7 @@
         });
         fh +=
           '<div style="background:var(--input-bg);border-radius:10px;padding:14px;border:1px solid rgba(76,175,80,.2);border-left:3px solid var(--success)"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-weight:600;font-size:14px">Total Arrecadado</span><span style="font-size:22px;font-weight:700;color:var(--success);font-family:\'DM Serif Display\',serif">R$ ' +
-          F(gr) +
+          F(c.grand) +
           "</span></div></div>";
         $("fin").innerHTML = fh;
         var pf = alimentos
@@ -1740,8 +2255,15 @@
         });
       });
       function fF(id) {
+        id = Number(id);
         return alimentos.find(function (f) {
-          return f.id === Number(id);
+          return Number(f.id) === id;
+        });
+      }
+      function fP(id) {
+        id = Number(id);
+        return participantes.find(function (p) {
+          return Number(p.id) === id;
         });
       }
 
@@ -1820,6 +2342,71 @@
               e.message +
               "</div>";
           });
+      }
+
+      function oEP(id) {
+        var p = fP(id);
+        if (!p) return;
+        $("ep-id").value = p.id;
+        $("ep-n").value = p.name;
+        $("ep-p").value = p.phone;
+        $("ep-c").value = p.canPay;
+        $("ep-s").value = p.status;
+        $("ep-d").value = p.date || "";
+        $("ep-o").value = p.notes || "";
+        $("ep-r").value = p.receiptUrl || "";
+        om("edit-part");
+      }
+
+      function showPart(id) {
+        var p = fP(id);
+        if (!p) return;
+        var need = Math.max(valorInsc - p.canPay, 0);
+        $("pd-title").textContent = p.name;
+        var h = '<div class="pdg">';
+        [
+          { l: "Telefone", v: fmtPhone(p.phone) || "—" },
+          { l: "Status da Inscrição", v: statusL[p.status] || p.status },
+          { l: "Pode pagar", v: "R$ " + F(p.canPay) },
+          { l: "Precisa", v: need > 0 ? "R$ " + F(need) : "Não precisa" },
+          { l: "Inscrição", v: fmtD(p.date) || "—" },
+          { l: "Valor inscrição", v: "R$ " + F(valorInsc) },
+        ].forEach(function (i) {
+          h +=
+            '<div class="pdi"><div class="pl">' +
+            i.l +
+            '</div><div class="pv">' +
+            esc(i.v) +
+            "</div></div>";
+        });
+        h += "</div>";
+        if (p.notes)
+          h +=
+            '<div class="ib2"><div style="font-size:11px;color:var(--text2);margin-bottom:4px">Observações</div><div style="font-size:14px">' +
+            esc(p.notes) +
+            "</div></div>";
+        h +=
+          '<div class="ib2"><div style="font-size:11px;color:var(--text2);margin-bottom:8px">Comprovante de pagamento</div>';
+        if (p.receiptUrl) {
+          h +=
+            '<a href="' +
+            esc(p.receiptUrl) +
+            '" target="_blank" rel="noopener" style="font-weight:600;font-size:14px">📎 Ver comprovante</a>';
+          if (p.receiptUrl.match(/\.(jpg|jpeg|png|gif|webp)/i))
+            h +=
+              '<div style="margin-top:10px;border-radius:10px;overflow:hidden;border:1px solid var(--border)"><img src="' +
+              esc(p.receiptUrl) +
+              '" style="width:100%;max-height:300px;object-fit:contain;background:#111"></div>';
+        } else
+          h +=
+            '<span style="color:var(--text2);font-size:13px">Nenhum comprovante</span>';
+        h += "</div>";
+        h +=
+          '<div class="fa"><button class="btn btn-ghost" onclick="cm();oEP(' +
+          p.id +
+          ')">✎ Editar</button><button class="btn btn-secondary" onclick="cm()">Fechar</button></div>';
+        $("pd-content").innerHTML = h;
+        om("part-detail");
       }
 
       // ═══ SUBMITS ═══
@@ -1904,12 +2491,13 @@
       }
 
       function dF(id) {
+        id = Number(id);
         var f = fF(id);
         if (!f || !confirm('Remover "' + f.name + '"?')) return;
         apiPost({ action: "deleteAlimento", id: id })
           .then(function () {
             alimentos = alimentos.filter(function (x) {
-              return x.id !== id;
+              return Number(x.id) !== id;
             });
             R();
             toast("Removido!", true);
@@ -1953,11 +2541,12 @@
       }
 
       function dS(id) {
+        id = Number(id);
         if (!confirm("Remover esta doação?")) return;
         apiPost({ action: "deleteApadrinhamento", id: id })
           .then(function () {
             apadrinhamentos = apadrinhamentos.filter(function (s) {
-              return s.id !== id;
+              return Number(s.id) !== id;
             });
             R();
             toast("Removido!", true);
@@ -2039,11 +2628,12 @@
       }
 
       function dBS(id) {
+        id = Number(id);
         if (!confirm("Remover esta venda?")) return;
         apiPost({ action: "deleteBrigVenda", id: id })
           .then(function () {
             brigVendas = brigVendas.filter(function (x) {
-              return x.id !== id;
+              return Number(x.id) !== id;
             });
             R();
             toast("Removido!", true);
@@ -2052,13 +2642,13 @@
             alert("Erro: " + e.message);
           });
       }
-
       function dBC(id) {
+        id = Number(id);
         if (!confirm("Remover este custo?")) return;
         apiPost({ action: "deleteBrigCusto", id: id })
           .then(function () {
             brigCustos = brigCustos.filter(function (x) {
-              return x.id !== id;
+              return Number(x.id) !== id;
             });
             R();
             toast("Removido!", true);
@@ -2078,6 +2668,120 @@
             cm();
             R();
             toast("Meta atualizada!", true);
+            setL(b, false);
+          })
+          .catch(function (e) {
+            alert("Erro: " + e.message);
+            setL(b, false);
+          });
+      }
+
+      // ═══ PARTICIPANT SUBMITS ═══
+      function subAddPart(b) {
+        var n = $("ap-n").value.trim();
+        if (!n) return alert("Preencha o nome.");
+        setL(b, true);
+        apiPost({
+          action: "addParticipante",
+          name: n,
+          phone: $("ap-p").value.trim(),
+          canPay: Number($("ap-c").value) || 0,
+          status: $("ap-s").value,
+          notes: $("ap-o").value.trim(),
+          receiptUrl: $("ap-r").value.trim(),
+          date: $("ap-d").value,
+        })
+          .then(function (p) {
+            participantes.push(p);
+            $("ap-n").value = "";
+            $("ap-p").value = "";
+            $("ap-c").value = "";
+            $("ap-o").value = "";
+            $("ap-r").value = "";
+            $("ap-d").value = "";
+            cm();
+            R();
+            toast("Cadastrado!", true);
+            setL(b, false);
+          })
+          .catch(function (e) {
+            alert("Erro: " + e.message);
+            setL(b, false);
+          });
+      }
+
+      function subEditPart(b) {
+        var id = Number($("ep-id").value);
+        setL(b, true);
+        var body = {
+          action: "updateParticipante",
+          id: id,
+          name: $("ep-n").value.trim(),
+          phone: $("ep-p").value.trim(),
+          canPay: Number($("ep-c").value) || 0,
+          status: $("ep-s").value,
+          notes: $("ep-o").value.trim(),
+          receiptUrl: $("ep-r").value.trim(),
+          date: $("ep-d").value,
+        };
+        apiPost(body)
+          .then(function () {
+            var p = fP(id);
+            if (p) {
+              p.name = body.name;
+              p.phone = body.phone;
+              p.canPay = body.canPay;
+              p.status = body.status;
+              p.notes = body.notes;
+              p.receiptUrl = body.receiptUrl;
+              p.date = body.date;
+            }
+            cm();
+            R();
+            toast("Atualizado!", true);
+            setL(b, false);
+          })
+          .catch(function (e) {
+            alert("Erro: " + e.message);
+            setL(b, false);
+          });
+      }
+
+      function dP(id) {
+        id = Number(id);
+        var p = fP(id);
+        if (!p || !confirm('Remover "' + p.name + '"?')) return;
+        apiPost({ action: "deleteParticipante", id: id })
+          .then(function (res) {
+            if (res.error) {
+              toast("Erro: " + res.error, false);
+              return;
+            }
+            // Recarrega tudo da API em vez de filtrar localmente
+            return apiGet("carregarTudo");
+          })
+          .then(function (d) {
+            if (!d) return;
+            participantes = d.participantes || [];
+            apadrinhamentos = d.apadrinhamentos || [];
+            R();
+            toast("Removido!", true);
+          })
+          .catch(function (e) {
+            alert("Erro: " + e.message);
+          });
+      }
+
+      function subInsc(b) {
+        var v = Number($("iv").value);
+        if (!v || v <= 0) return alert("Valor inválido.");
+        setL(b, true);
+        apiPost({ action: "setValorInscricao", valor: v })
+          .then(function () {
+            valorInsc = v;
+            cm();
+            R();
+            toast("Valor atualizado!", true);
             setL(b, false);
           })
           .catch(function (e) {
