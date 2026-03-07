@@ -1,0 +1,53 @@
+/* Mobile card list (shown instead of table on mobile) */
+.cl {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+}
+.fc,
+.sc,
+.bc,
+.pc {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* Generic block/group box */
+.gb {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 22px;
+}
+
+/* Two-column chart/content grid */
+.cg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.cc {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  min-width: 0;
+  overflow: hidden;
+}
+.cc h4 {
+  font-family: "DM Serif Display", serif;
+  font-weight: 400;
+  font-size: 15px;
+  margin-bottom: 16px;
+}
+
+/* Auto-fill grid for items */
+.ag {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}

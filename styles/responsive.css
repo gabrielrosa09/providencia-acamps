@@ -1,0 +1,36 @@
+@media (max-width: 768px) {
+  .header,
+  .main {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .main {
+    padding-top: 16px;
+    padding-bottom: 60px;
+  }
+  .header {
+    padding-top: 16px;
+  }
+  .dt {
+    display: none !important;
+  }
+  .cl {
+    display: flex !important;
+  }
+  .cg {
+    grid-template-columns: 1fr !important;
+  }
+  .stats-row > .stat-card {
+    min-width: 100% !important;
+    flex-basis: 100% !important;
+  }
+  .hm {
+    display: none !important;
+  }
+  .tl {
+    display: none;
+  }
+  .pdg {
+    grid-template-columns: 1fr !important;
+  }
+}

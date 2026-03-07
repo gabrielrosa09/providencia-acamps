@@ -1,0 +1,21 @@
+:root {
+  --bg: #1a1510;
+  --card: #231e17;
+  --card-hover: #2c2519;
+  --accent: #e8943a;
+  --accent-light: #f0b060;
+  --success: #4caf50;
+  --success-bg: rgba(76, 175, 80, 0.12);
+  --warning: #ff9800;
+  --warning-bg: rgba(255, 152, 0, 0.12);
+  --danger: #ef5350;
+  --danger-bg: rgba(239, 83, 80, 0.12);
+  --purple: #9c7cfa;
+  --purple-bg: rgba(156, 124, 250, 0.12);
+  --choco-bg: rgba(139, 69, 19, 0.15);
+  --choco-text: #d4915c;
+  --text: #f5efe6;
+  --text2: #a89a88;
+  --border: #3a3228;
+  --input-bg: #1e1912;
+}

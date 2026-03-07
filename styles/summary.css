@@ -1,0 +1,66 @@
+/* Toggle bar */
+.tb {
+  display: flex;
+  background: var(--input-bg);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.tbb {
+  padding: 8px 16px;
+  border: none;
+  font-size: 13px;
+  background: transparent;
+  color: var(--text2);
+  cursor: pointer;
+  font-family: inherit;
+}
+.tbb.active {
+  background: var(--choco-bg);
+  color: var(--choco-text);
+  font-weight: 600;
+}
+
+/* Summary stat mini-cards */
+.sm {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.sm > div {
+  flex: 1 1 150px;
+  background: var(--input-bg);
+  border-radius: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+}
+.sm .sl {
+  font-size: 11px;
+  color: var(--text2);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sm .sv {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: "DM Serif Display", serif;
+}
+.sm .ss {
+  font-size: 11px;
+  color: var(--text2);
+  margin-top: 2px;
+}
+
+/* Total row at bottom of table */
+.tr {
+  padding: 12px 18px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}

@@ -1,0 +1,71 @@
+.table {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.t-hdr {
+  display: grid;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+.t-row {
+  display: grid;
+  padding: 13px 18px;
+  align-items: center;
+  border-bottom: 1px solid rgba(58, 50, 40, 0.13);
+  transition: background 0.15s;
+}
+.t-row:hover {
+  background: var(--card-hover);
+}
+.t-row:last-child {
+  border-bottom: none;
+}
+
+/* Column layouts */
+.food-cols {
+  grid-template-columns: 2.2fr 0.8fr 0.8fr 120px 120px;
+}
+.sponsor-cols {
+  grid-template-columns: 2fr 1fr 1fr 1.2fr 70px;
+}
+.part-cols {
+  grid-template-columns: 2fr 0.8fr 0.8fr 0.8fr 0.6fr 100px;
+}
+.bs-cols {
+  grid-template-columns: 1.2fr 0.7fr 0.8fr 1fr 1.2fr 60px;
+}
+.bc-cols {
+  grid-template-columns: 1.2fr 2fr 1fr 60px;
+}
+
+/* Inline elements */
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  flex-shrink: 0;
+}
+.badge {
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.ib {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
