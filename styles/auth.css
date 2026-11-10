@@ -57,18 +57,122 @@ body.logged-out .main {
   gap: 6px;
   flex-wrap: wrap;
 }
-.ub-reg {
-  padding: 6px 12px;
+.ub-reg,
+.rd-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
   border-radius: 99px;
   background: rgba(232, 148, 58, 0.12);
+  border: 1px solid rgba(232, 148, 58, 0.25);
   color: var(--accent-light);
   font-size: 13px;
   font-weight: 600;
+  line-height: 1;
 }
-.ub-sel {
-  padding: 6px 10px;
+.rd-ic {
+  flex-shrink: 0;
+}
+
+/* Seletor de regional (super) */
+.rd {
+  position: relative;
+}
+.rd-btn {
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, border-color 0.15s;
+}
+.rd-btn:hover,
+.rd.open .rd-btn {
+  background: rgba(232, 148, 58, 0.2);
+  border-color: rgba(232, 148, 58, 0.5);
+}
+.rd-btn:focus-visible,
+.rd-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.rd-chev {
+  opacity: 0.8;
+  transition: transform 0.2s;
+}
+.rd.open .rd-chev {
+  transform: rotate(180deg);
+}
+.rd-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 900;
+  min-width: 230px;
+  padding: 6px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.15s, transform 0.15s, visibility 0.15s;
+}
+.rd.open .rd-menu {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  visibility: visible;
+}
+.rd-head {
+  padding: 8px 10px 6px;
+  font-size: 10px;
   font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text2);
+}
+.rd-sep {
+  height: 1px;
+  margin: 4px 6px;
+  background: var(--border);
+}
+.rd-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+.rd-item .rd-ic {
+  color: var(--text2);
+}
+.rd-item:hover,
+.rd-item:focus-visible {
+  background: var(--card-hover);
+}
+.rd-item.sel {
+  background: rgba(232, 148, 58, 0.12);
   color: var(--accent-light);
+  font-weight: 600;
+}
+.rd-item.sel .rd-ic {
+  color: var(--accent-light);
+}
+.rd-lbl {
+  flex: 1;
+}
+.rd-check {
+  display: flex;
+  color: var(--accent);
 }
 .ub-name {
   color: var(--text2);
@@ -148,6 +252,12 @@ body.no-admin .admin-only {
   .userbar {
     margin-left: 0;
     width: 100%;
+  }
+  /* No celular o botão fica à esquerda: menu abre para a direita */
+  .rd-menu {
+    left: 0;
+    right: auto;
+    max-width: calc(100vw - 28px);
   }
 }
 
