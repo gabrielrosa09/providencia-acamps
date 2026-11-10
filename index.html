@@ -14,6 +14,25 @@
   <body>
     <div id="toast" class="toast"></div>
 
+    <!-- LOGIN -->
+    <div id="login" class="login-ov">
+      <form class="md login-box" onsubmit="return doLogin(event)">
+        <img src="images/acamps-logo-laranja.png" width="56" height="56" alt="Logo Acamps" />
+        <h2>Acampamento de Jovens</h2>
+        <p>Entre com o usuário que o coordenador da sua regional criou para você.</p>
+        <div class="fg">
+          <label for="lg-u">Usuário</label
+          ><input id="lg-u" autocomplete="username" autocapitalize="none" spellcheck="false" />
+        </div>
+        <div class="fg">
+          <label for="lg-s">Senha</label
+          ><input id="lg-s" type="password" autocomplete="current-password" />
+        </div>
+        <div id="login-err" class="login-err" role="alert"></div>
+        <button id="lg-b" type="submit" class="btn btn-primary login-btn">Entrar</button>
+      </form>
+    </div>
+
     <header class="header">
       <div
         style="
@@ -21,6 +40,7 @@
           align-items: center;
           gap: 10px;
           margin-bottom: 4px;
+          flex-wrap: wrap;
         "
       >
         <img
@@ -34,6 +54,7 @@
           <h1>Acampamento de Jovens</h1>
           <p>Controle de Doações · 2026</p>
         </div>
+        <div id="userbar" class="userbar"></div>
       </div>
       <div class="tabs">
         <button
@@ -92,6 +113,10 @@
     </header>
 
     <main class="main">
+      <div id="ro-banner" class="ro-banner" style="display: none">
+        Você está vendo <b>todas as regionais</b> somadas. Para lançar ou editar
+        dados, escolha uma regional no topo.
+      </div>
       <div id="loading" class="loading">
         <div class="spinner"></div>
         <p>Carregando dados...</p>
@@ -646,6 +671,63 @@
       </div>
     </div>
 
+    <!-- Alterar senha -->
+    <div class="mo" id="m-senha">
+      <div class="md" onclick="event.stopPropagation()">
+        <div class="mt">
+          <h3>Alterar minha senha</h3>
+          <button class="cb" onclick="cm()">✕</button>
+        </div>
+        <div class="fg">
+          <label>Senha atual</label
+          ><input id="ps-a" type="password" autocomplete="current-password" />
+        </div>
+        <div class="fg">
+          <label>Nova senha (mín. 6 caracteres)</label
+          ><input id="ps-n" type="password" autocomplete="new-password" />
+        </div>
+        <div class="fg">
+          <label>Confirmar nova senha</label
+          ><input id="ps-c" type="password" autocomplete="new-password" />
+        </div>
+        <div class="fa">
+          <button class="btn btn-secondary" onclick="cm()">Cancelar</button
+          ><button class="btn btn-primary" onclick="subSenha(this)">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Equipe -->
+    <div class="mo" id="m-equipe">
+      <div class="md wide" onclick="event.stopPropagation()">
+        <div class="mt">
+          <h3>👥 Equipe</h3>
+          <button class="cb" onclick="cm()">✕</button>
+        </div>
+        <div id="eq-list" class="eq-list"></div>
+        <h4 class="eq-h">Novo usuário</h4>
+        <div class="fr">
+          <div class="fg"><label>Nome</label><input id="nu-nome" placeholder="Ex: Maria" /></div>
+          <div class="fg">
+            <label>Usuário (login)</label
+            ><input id="nu-user" placeholder="Ex: maria.silva" autocapitalize="none" spellcheck="false" />
+          </div>
+        </div>
+        <div class="fr">
+          <div class="fg">
+            <label>Senha inicial</label
+            ><input id="nu-senha" type="text" placeholder="mín. 6 caracteres" autocomplete="off" />
+          </div>
+          <div class="fg"><label>Papel</label><select id="nu-papel"></select></div>
+        </div>
+        <div class="fg" id="nu-reg-wrap"><label>Regional</label><select id="nu-reg"></select></div>
+        <div class="fa">
+          <button class="btn btn-secondary" onclick="cm()">Fechar</button
+          ><button class="btn btn-primary" onclick="subNovoU(this)">Criar usuário</button>
+        </div>
+      </div>
+    </div>
+
     <script src="scripts/state.js"></script>
     <script src="scripts/api.js"></script>
     <script src="scripts/ui.js"></script>
@@ -654,6 +736,7 @@
     <script src="scripts/apadrinhados.js"></script>
     <script src="scripts/brigadeiros.js"></script>
     <script src="scripts/dashboard.js"></script>
+    <script src="scripts/auth.js"></script>
     <script src="scripts/main.js"></script>
   </body>
 </html>

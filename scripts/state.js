@@ -6,7 +6,11 @@ var alimentos = [],
   participantes = [];
 var metaArr = 5000,
   metaBrig = 3000,
-  valorInsc = 200;
+  valorInsc = 200,
+  valoresInsc = {}; // valor da inscrição por regional (usado na visão "Todas")
+var usuario = null, // usuário logado {nome, usuario, papel, regional}
+  regionais = {}, // código → nome
+  regionalAtual = null; // regional exibida (ou "TODAS")
 var curTab = "alimentos",
   curBV = "sales";
 
@@ -51,6 +55,17 @@ function fmtPhone(p) {
   return p;
 }
 
+// Valor da inscrição de um participante (cada regional tem o seu)
+function vI(p) {
+  return (p && valoresInsc[p.regional]) || valorInsc || 0;
+}
+function isTodas() {
+  return regionalAtual === "TODAS";
+}
+function isAdmin() {
+  return usuario && (usuario.papel === "admin" || usuario.papel === "super");
+}
+
 // === COMPUTADOS ===
 function comp() {
   var totalSp = apadrinhamentos.reduce(function (s, d) {
@@ -67,13 +82,13 @@ function comp() {
     return p.status !== "desistiu";
   });
   var totalNeed = actParts.reduce(function (s, p) {
-    return s + Math.max(valorInsc - p.canPay, 0);
+    return s + Math.max(vI(p) - p.canPay, 0);
   }, 0);
   var partsNeed = actParts.filter(function (p) {
-    return p.canPay < valorInsc;
+    return p.canPay < vI(p);
   }).length;
   var partsFull = actParts.filter(function (p) {
-    return p.canPay >= valorInsc;
+    return p.canPay >= vI(p);
   }).length;
   var fDone = alimentos.filter(function (f) {
     return f.received >= f.goal;

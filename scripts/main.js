@@ -1,7 +1,15 @@
 // === INICIALIZAÇÃO ===
 
 window.onload = function () {
-  apiGet("carregarTudo")
+  if (!authToken) return showLogin();
+  carregar();
+};
+
+// Busca tudo da regional atual e redesenha
+function carregar() {
+  $("loading").style.display = "block";
+  $("loading").innerHTML = '<div class="spinner"></div><p>Carregando dados...</p>';
+  return apiGet("carregarTudo")
     .then(function (d) {
       alimentos = d.alimentos || [];
       apadrinhamentos = d.apadrinhamentos || [];
@@ -10,16 +18,24 @@ window.onload = function () {
       participantes = d.participantes || [];
       metaArr = d.metaArrecadacao || 5000;
       metaBrig = d.metaBrigadeiros || 3000;
-      valorInsc = d.valorInscricao || 200;
+      valorInsc = d.valorInscricao || 0;
+      valoresInsc = d.valoresInscricao || {};
+      usuario = d.user;
+      regionais = d.regionais || {};
+      regionalAtual = d.regional;
       $("loading").style.display = "none";
+      rUserBar();
       R();
-      go("alimentos");
+      go(curTab);
     })
-    .catch(function () {
+    .catch(function (e) {
+      if (!authToken) return; // sessão caiu: tela de login já aberta
       $("loading").innerHTML =
-        '<p style="color:var(--danger)">Erro ao conectar com a API.<br><br><small style="color:var(--text2)">Verifique se a URL está correta e se o deploy está como "Qualquer pessoa".</small></p>';
+        '<p style="color:var(--danger)">Erro ao carregar: ' +
+        esc(e.message) +
+        '<br><br><small style="color:var(--text2)">Verifique sua conexão e tente novamente.</small></p>';
     });
-};
+}
 
 // === NAVEGAÇÃO ===
 

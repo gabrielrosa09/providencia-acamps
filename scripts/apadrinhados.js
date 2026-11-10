@@ -18,7 +18,7 @@ function rApad() {
       if (filter === "confirmado") return p.status === "confirmado";
       if (filter === "pendente") return p.status === "pendente";
       if (filter === "desistiu") return p.status === "desistiu";
-      if (filter === "need") return p.status !== "desistiu" && p.canPay < vi;
+      if (filter === "need") return p.status !== "desistiu" && p.canPay < vI(p);
       return true;
     })
     .sort(function (a, b) {
@@ -29,9 +29,12 @@ function rApad() {
 
   // Banner
   var h =
-    '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px"><div><h3 style="font-family:\'DM Serif Display\',serif;font-weight:400;font-size:17px;margin-bottom:3px">👥 Gestão de Apadrinhados</h3><span style="color:var(--text2);font-size:12px">Inscrição: R$ ' +
-    F(vi) +
-    " por jovem <button onclick=\"om('edit-insc');$('iv').value=valorInsc\" style=\"background:rgba(255,255,255,.06);border:none;border-radius:4px;padding:2px 6px;color:var(--text2);cursor:pointer;font-size:11px\">✎ editar</button></span></div></div>";
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px"><div><h3 style="font-family:\'DM Serif Display\',serif;font-weight:400;font-size:17px;margin-bottom:3px">👥 Gestão de Apadrinhados</h3><span style="color:var(--text2);font-size:12px">Inscrição: ' +
+    (isTodas() ? "varia por regional" : "R$ " + F(vi) + " por jovem") +
+    (isTodas() || !isAdmin()
+      ? ""
+      : " <button onclick=\"om('edit-insc');$('iv').value=valorInsc\" style=\"background:rgba(255,255,255,.06);border:none;border-radius:4px;padding:2px 6px;color:var(--text2);cursor:pointer;font-size:11px\">✎ editar</button>") +
+    "</span></div></div>";
   h += '<div class="sm" style="margin-top:0">';
   h +=
     '<div><div class="sl">💰 Total Disponível</div><div class="sv" style="color:var(--success)">R$ ' +
@@ -194,7 +197,7 @@ function oEP(id) {
 function showPart(id) {
   var p = fP(id);
   if (!p) return;
-  var need = Math.max(valorInsc - p.canPay, 0);
+  var need = Math.max(vI(p) - p.canPay, 0);
   $("pd-title").textContent = p.name;
   var h = '<div class="pdg">';
   [
@@ -203,7 +206,7 @@ function showPart(id) {
     { l: "Pode pagar", v: "R$ " + F(p.canPay) },
     { l: "Precisa", v: need > 0 ? "R$ " + F(need) : "Não precisa" },
     { l: "Inscrição", v: fmtD(p.date) || "—" },
-    { l: "Valor inscrição", v: "R$ " + F(valorInsc) },
+    { l: "Valor inscrição", v: "R$ " + F(vI(p)) },
   ].forEach(function (i) {
     h +=
       '<div class="pdi"><div class="pl">' +

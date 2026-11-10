@@ -28,7 +28,7 @@ function rBB() {
     F(metaBrig) +
     " (" +
     Math.round(Math.max(p, 0)) +
-    "%)</span><button style=\"background:rgba(255,255,255,.06);border:none;border-radius:6px;width:24px;height:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2)\" onclick=\"om('edit-brig-goal');$('bgv').value=metaBrig\">⚙</button></div></div></div>" +
+    "%)</span><button style=\"background:rgba(255,255,255,.06);border:none;border-radius:6px;width:24px;height:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2)\" class=\"admin-only\" onclick=\"om('edit-brig-goal');$('bgv').value=metaBrig\">⚙</button></div></div></div>" +
     pb(Math.max(st.pr, 0), metaBrig, true) +
     '<div class="sm"><div><div class="sl">Vendas</div><div class="sv" style="color:var(--success)">R$ ' +
     F(st.rv) +

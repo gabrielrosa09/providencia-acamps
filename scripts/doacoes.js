@@ -15,7 +15,7 @@ function rGB() {
     F(metaArr) +
     " (" +
     Math.round(p) +
-    "%)</span><button style=\"background:rgba(255,255,255,.06);border:none;border-radius:6px;width:24px;height:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2)\" onclick=\"om('edit-goal');$('gv').value=metaArr\">⚙</button></div></div></div>" +
+    "%)</span><button style=\"background:rgba(255,255,255,.06);border:none;border-radius:6px;width:24px;height:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2)\" class=\"admin-only\" onclick=\"om('edit-goal');$('gv').value=metaArr\">⚙</button></div></div></div>" +
     pb(t, metaArr, true) +
     (p >= 100
       ? '<div style="margin-top:12px;padding:7px 12px;background:var(--success-bg);border-radius:8px;color:var(--success);font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px">✓ Meta atingida!</div>'
