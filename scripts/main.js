@@ -47,6 +47,7 @@ function go(t) {
     $("tab-" + x).className = "tab-btn" + (x === t ? " active" : "");
   });
   if (t === "dashboard") rDash();
+  if (t === "brigadeiros") marcaDescLongas($("bcont"));
 }
 
 // Atualiza todos os painéis

@@ -83,8 +83,8 @@ function rBC() {
         F(s.unitPrice) +
         '</span><span style="text-align:center;font-weight:700;color:var(--success)">R$ ' +
         F(t) +
-        '</span><span style="font-size:12px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' +
-        esc(s.description) +
+        '</span>' +
+        descCell(s.description) +
         '</span><div style="display:flex;justify-content:center">' +
         ib("var(--danger-bg)", "var(--danger)", "dBS(" + s.id + ")", "✕") +
         "</div></div>";
@@ -107,6 +107,7 @@ function rBC() {
     });
     h += "</div>";
     el.innerHTML = '<div class="dt">' + h + '</div><div class="cl">' + c + "</div>";
+    marcaDescLongas(el);
   } else {
     var l = [].concat(brigCustos).reverse(),
       h =
@@ -120,8 +121,8 @@ function rBC() {
       h +=
         '<div class="t-row bc-cols"><span style="font-weight:500">' +
         fmtD(x.date) +
-        '</span><span style="font-size:13px;color:var(--text2)">' +
-        esc(x.description) +
+        '</span>' +
+        descCell(x.description) +
         '</span><span style="text-align:center;font-weight:700;color:var(--danger)">- R$ ' +
         F(x.amount) +
         '</span><div style="display:flex;justify-content:center">' +
@@ -146,7 +147,21 @@ function rBC() {
       F(tot) +
       "</span></div></div>";
     el.innerHTML = '<div class="dt">' + h + '</div><div class="cl">' + c + "</div>";
+    marcaDescLongas(el);
   }
+}
+
+// Descrição: até 2 linhas na tabela; se passar disso, clique mostra tudo
+function descCell(d) {
+  if (!d) return '<span class="desc vazio">—</span>';
+  return '<span class="desc" title="' + esc(d) + '" onclick="this.classList.toggle(\'full\')">' + esc(d) + "</span>";
+}
+
+// Marca só as que realmente foram cortadas (cursor de clique + "ver mais")
+function marcaDescLongas(el) {
+  el.querySelectorAll(".desc").forEach(function (d) {
+    d.classList.toggle("more", d.scrollHeight > d.clientHeight + 1);
+  });
 }
 
 function ubp() {

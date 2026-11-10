@@ -39,10 +39,41 @@
   grid-template-columns: 2fr 0.8fr 0.8fr 0.8fr 0.6fr 100px;
 }
 .bs-cols {
-  grid-template-columns: 1.2fr 0.7fr 0.8fr 1fr 1.2fr 60px;
+  grid-template-columns: 0.9fr 0.6fr 0.8fr 0.9fr 2.4fr 60px;
+  column-gap: 12px;
 }
 .bc-cols {
-  grid-template-columns: 1.2fr 2fr 1fr 60px;
+  grid-template-columns: 0.9fr 2.6fr 1fr 60px;
+  column-gap: 12px;
+}
+
+/* Descrição longa: 2 linhas, clique expande */
+.desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text2);
+  overflow-wrap: anywhere;
+}
+.desc.vazio {
+  opacity: 0.5;
+}
+.desc.more {
+  cursor: pointer;
+}
+.desc.more:hover {
+  color: var(--text);
+}
+.desc.full {
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  color: var(--text);
 }
 
 /* Inline elements */
