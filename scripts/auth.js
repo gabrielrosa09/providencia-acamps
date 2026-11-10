@@ -119,6 +119,7 @@ function regDropdown() {
 
 function toggleRegDD(e) {
   e.stopPropagation();
+  if (typeof csFecha === "function") csFecha();
   var dd = $("rd"),
     open = !dd.classList.contains("open");
   dd.classList.toggle("open", open);

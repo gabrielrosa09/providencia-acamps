@@ -65,6 +65,7 @@ function R() {
 
 function om(id) {
   $("m-" + id).classList.add("open");
+  if (typeof csRefreshAll === "function") csRefreshAll();
 }
 
 function cm() {
