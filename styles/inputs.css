@@ -1,0 +1,105 @@
+/* Campos de texto padronizados (formulários, busca, login) */
+
+/* Controles nativos (calendário, scrollbar do textarea) no tema escuro */
+:root {
+  color-scheme: dark;
+}
+
+.fg input,
+.fg textarea,
+.search-input {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+}
+.fg input,
+.fg textarea {
+  padding: 10px 14px;
+  font-size: 14px;
+}
+
+.fg input:hover,
+.fg textarea:hover,
+.search-input:hover {
+  border-color: rgba(232, 148, 58, 0.45);
+}
+
+/* Foco: borda laranja + halo suave (vale também para os dropdowns) */
+.fg input:focus,
+.fg textarea:focus,
+.search-input:focus,
+.cs.open .cs-btn,
+.cs-btn:focus-visible {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(232, 148, 58, 0.15);
+  background-color: #211b14;
+  outline: none;
+}
+
+::placeholder {
+  color: var(--text2);
+  opacity: 0.55;
+}
+
+.fg label {
+  letter-spacing: 0.2px;
+}
+
+.fg textarea {
+  min-height: 80px;
+  line-height: 1.45;
+}
+
+/* Busca com lupa */
+.search-input {
+  padding-left: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a89a88' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.5-3.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 12px center;
+}
+
+/* Números sem as setinhas nativas */
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Data: ícone do calendário discreto */
+input[type="date"] {
+  min-height: 42px;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.15s;
+}
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Preenchimento automático do navegador sem fundo amarelo/branco */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text);
+  -webkit-box-shadow: 0 0 0 1000px var(--input-bg) inset;
+  caret-color: var(--text);
+  transition: background-color 9999s;
+}
+
+/* iOS: evita zoom ao focar (fonte < 16px faz o Safari dar zoom) */
+@media (max-width: 768px) {
+  .fg input,
+  .fg textarea,
+  .search-input {
+    font-size: 16px;
+  }
+}
