@@ -9,8 +9,8 @@ function rDash() {
 
   // Cards de estatísticas
   $("ds").innerHTML =
-    sc("📦", "Alimentos", dn + "/" + t, Math.round(t > 0 ? (dn / t) * 100 : 0) + "% das metas", "var(--accent-light)") +
-    sc("💰", "Doações", "R$ " + F(c.totalSp), Math.round(spPct) + "% da meta", "var(--success)") +
+    sc("📦", "Alimentos", dn + "/" + t, Math.round(t > 0 ? (dn / t) * 100 : 0) + "% das metas", "var(--accent-light)", t > 0 ? (dn / t) * 100 : 0) +
+    sc("💰", "Doações", "R$ " + F(c.totalSp), Math.round(spPct) + "% da meta", "var(--success)", spPct) +
     sc("👥", "Apadrinhados", c.actParts.length + " jovens", c.partsNeed + " precisam apoio", "var(--purple)") +
     sc("🏆", "Total Arrecadado", "R$ " + F(c.grand), "Doações + Brigadeiros", "var(--success)");
 

@@ -14,6 +14,7 @@ function rFS() {
       (t > 0 ? Math.round((d / t) * 100) : 0) + "%",
       d + " de " + t,
       "var(--success)",
+      t > 0 ? (d / t) * 100 : 0,
     ) +
     sc(
       "⚠️",

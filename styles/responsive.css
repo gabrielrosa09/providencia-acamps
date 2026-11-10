@@ -20,9 +20,24 @@
   .cg {
     grid-template-columns: 1fr !important;
   }
-  .stats-row > .stat-card {
-    min-width: 100% !important;
-    flex-basis: 100% !important;
+  /* Celular: 2 cards por linha; card sobrando ocupa a linha inteira */
+  .stats-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .stats-row > .stat-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+  .stat-card {
+    padding: 14px;
+  }
+  .stat-ic {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+  .stat-value {
+    font-size: 21px;
   }
   .hm {
     display: none !important;

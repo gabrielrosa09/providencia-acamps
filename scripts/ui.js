@@ -19,19 +19,18 @@ function pb(v, m, lg) {
 }
 
 // Card de estatística
-function sc(i, l, v, s, c) {
+// i: ícone, l: título, v: valor, s: legenda, c: cor (opcional), pct: 0-100 mostra barrinha (opcional)
+function sc(i, l, v, s, c, pct) {
+  var cor = c || "var(--accent-light)";
   return (
-    '<div class="stat-card"><div class="stat-label">' +
-    i +
-    " " +
-    l +
-    '</div><div class="stat-value" style="color:' +
-    (c || "var(--text)") +
-    '">' +
-    v +
-    '</div><div class="stat-sub">' +
-    s +
-    "</div></div>"
+    '<div class="stat-card" style="--c:' + cor + '">' +
+    '<div class="stat-top"><span class="stat-ic" aria-hidden="true">' + i + '</span><span class="stat-label">' + l + "</span></div>" +
+    '<div class="stat-value"' + (c ? "" : ' style="color:var(--text)"') + ">" + v + "</div>" +
+    '<div class="stat-sub">' + s + "</div>" +
+    (pct === undefined || pct === null
+      ? ""
+      : '<div class="stat-bar"><i style="width:' + Math.max(0, Math.min(pct, 100)) + '%"></i></div>') +
+    "</div>"
   );
 }
 
