@@ -150,3 +150,74 @@ body.no-admin .admin-only {
     width: 100%;
   }
 }
+
+/* Resumo por regional (Dashboard em "Todas") */
+.rg {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px;
+}
+.rg-card {
+  text-align: left;
+  font: inherit;
+  color: var(--text);
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color 0.2s;
+}
+.rg-card:hover {
+  border-color: var(--accent);
+}
+.rg-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.rg-nome {
+  font-weight: 700;
+  font-size: 14px;
+}
+.rg-lider {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--accent-light);
+}
+.rg-total {
+  font-family: "DM Serif Display", serif;
+  font-size: 24px;
+  color: var(--success);
+  margin-top: 4px;
+}
+.rg-cap {
+  font-size: 11px;
+  color: var(--text2);
+  margin-bottom: 6px;
+}
+.rg-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text2);
+}
+.rg-line b {
+  color: var(--text);
+  font-weight: 600;
+  text-align: right;
+}
+.rg-line small {
+  color: var(--text2);
+  font-weight: 400;
+}
+.rg-meta {
+  font-size: 11px;
+  color: var(--text2);
+  margin-top: -2px;
+}

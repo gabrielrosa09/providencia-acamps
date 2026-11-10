@@ -20,6 +20,7 @@ function carregar() {
       metaBrig = d.metaBrigadeiros || 3000;
       valorInsc = d.valorInscricao || 0;
       valoresInsc = d.valoresInscricao || {};
+      metasReg = d.metasPorRegional || {};
       usuario = d.user;
       regionais = d.regionais || {};
       regionalAtual = d.regional;

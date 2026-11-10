@@ -14,6 +14,8 @@ function rDash() {
     sc("👥", "Apadrinhados", c.actParts.length + " jovens", c.partsNeed + " precisam apoio", "var(--purple)") +
     sc("🏆", "Total Arrecadado", "R$ " + F(c.grand), "Doações + Brigadeiros", "var(--success)");
 
+  rRegSum();
+
   // Progresso dos alimentos (lista descritiva)
   var bh = "";
   if (!alimentos.length) {
@@ -36,7 +38,7 @@ function rDash() {
       bh +=
         '<div style="margin-bottom:14px">' +
         '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;gap:8px">' +
-        '<span style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(f.name) + "</span>" +
+        '<span style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(f.name) + regTag(f) + "</span>" +
         '<div style="display:flex;align-items:center;gap:10px;flex-shrink:0">' +
         '<span style="font-size:12px;color:var(--text2)">' + f.received + "/" + f.goal + " " + f.unit + "</span>" +
         '<span style="font-size:12px;font-weight:700;color:' + pctColor + ';min-width:34px;text-align:right">' + Math.round(pct) + "%</span>" +
@@ -98,6 +100,7 @@ function rDash() {
       bc +
       '"><div style="display:flex;justify-content:space-between;margin-bottom:8px;gap:8px"><span style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' +
       esc(f.name) +
+      regTag(f) +
       '</span><span style="font-size:12px;font-weight:600;color:' +
       tc +
       ';flex-shrink:0">' +
@@ -112,4 +115,110 @@ function rDash() {
   });
   ah += "</div>";
   $("att").innerHTML = ah;
+}
+
+// === RESUMO POR REGIONAL (só na visão "Todas") ===
+
+// Nome da regional ao lado do item, para diferenciar itens iguais de regionais diferentes
+function regTag(x) {
+  if (!isTodas() || !x.regional) return "";
+  return ' <span style="font-size:11px;font-weight:400;color:var(--text2)">· ' + esc(regionais[x.regional] || x.regional) + "</span>";
+}
+
+function soma(arr, fn) {
+  return arr.reduce(function (s, x) {
+    return s + fn(x);
+  }, 0);
+}
+
+// Mesmos números do comp()/bst(), mas só de uma regional
+function compReg(r) {
+  var de = function (x) {
+    return x.regional === r;
+  };
+  var al = alimentos.filter(de),
+    ap = apadrinhamentos.filter(de),
+    bv = brigVendas.filter(de),
+    bc = brigCustos.filter(de),
+    pt = participantes.filter(function (p) {
+      return p.regional === r && p.status !== "desistiu";
+    });
+  var doacoes = soma(ap, function (d) {
+      return d.amount;
+    }),
+    lucro =
+      soma(bv, function (v) {
+        return v.qty * v.unitPrice;
+      }) -
+      soma(bc, function (c) {
+        return c.amount;
+      }),
+    vi = valoresInsc[r] || 0;
+  return {
+    doacoes: doacoes,
+    lucro: lucro,
+    total: doacoes + Math.max(lucro, 0),
+    jovens: pt.length,
+    precisam: pt.filter(function (p) {
+      return p.canPay < vi;
+    }).length,
+    apoio: soma(pt, function (p) {
+      return Math.max(vi - p.canPay, 0);
+    }),
+    alTotal: al.length,
+    alFeitos: al.filter(function (f) {
+      return f.received >= f.goal;
+    }).length,
+    meta: (metasReg[r] || {}).arrecadacao || 0,
+  };
+}
+
+function rRegSum() {
+  $("reg-wrap").style.display = isTodas() ? "block" : "none";
+  if (!isTodas()) return;
+
+  var lista = Object.keys(regionais).map(function (r) {
+    return { r: r, c: compReg(r) };
+  });
+  var maior = Math.max.apply(
+    null,
+    lista.map(function (x) {
+      return x.c.total;
+    })
+  );
+
+  var h = "";
+  lista
+    .sort(function (a, b) {
+      return b.c.total - a.c.total;
+    })
+    .forEach(function (x) {
+      var c = x.c,
+        nome = esc(regionais[x.r]),
+        pct = c.meta > 0 ? Math.round((c.doacoes / c.meta) * 100) : null,
+        coberto = c.apoio <= c.total;
+      h +=
+        '<button class="rg-card" onclick="verRegional(\'' + x.r + '\')" title="Abrir ' + nome + '">' +
+        '<div class="rg-top"><span class="rg-nome">' + nome + "</span>" +
+        (maior > 0 && c.total === maior ? '<span class="rg-lider">🏆 maior arrecadação</span>' : "") +
+        "</div>" +
+        '<div class="rg-total">R$ ' + F(c.total) + "</div>" +
+        '<div class="rg-cap">arrecadado (doações + brigadeiros)</div>' +
+        '<div class="rg-line"><span>💰 Doações</span><b>R$ ' + F(c.doacoes) + "</b></div>" +
+        (pct === null ? "" : pb(c.doacoes, c.meta) + '<div class="rg-meta">' + Math.min(pct, 100) + "% da meta de R$ " + F(c.meta) + "</div>") +
+        '<div class="rg-line"><span>🍫 Brigadeiros (líquido)</span><b style="color:' + (c.lucro < 0 ? "var(--danger)" : "var(--choco-text)") + '">R$ ' + F(c.lucro) + "</b></div>" +
+        '<div class="rg-line"><span>👥 Jovens</span><b>' + c.jovens + (c.precisam ? " <small>(" + c.precisam + " precisam apoio)</small>" : "") + "</b></div>" +
+        (c.apoio > 0
+          ? '<div class="rg-line"><span>🎯 Apoio necessário</span><b style="color:' + (coberto ? "var(--success)" : "var(--warning)") + '">R$ ' + F(c.apoio) + (coberto ? " ✓" : "") + "</b></div>"
+          : "") +
+        '<div class="rg-line"><span>📦 Alimentos</span><b>' + c.alFeitos + "/" + c.alTotal + " metas</b></div>" +
+        "</button>";
+    });
+  $("reg-sum").innerHTML = h;
+}
+
+// Clique no card abre a regional
+function verRegional(r) {
+  setRegionalSel(r);
+  carregar();
 }

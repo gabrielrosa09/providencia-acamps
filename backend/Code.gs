@@ -664,11 +664,15 @@ var PADRAO = { MetaArrecadacao: 5000, MetaBrigadeiros: 3000, ValorInscricao: 200
 
 function carregarTudo(user, reg) {
   var regs = reg === TODAS ? Object.keys(REGIONAIS) : [reg];
-  var valores = {}, metaArr = 0, metaBrig = 0;
+  var valores = {}, metas = {}, metaArr = 0, metaBrig = 0;
   regs.forEach(function (r) {
     valores[r] = getConfigReg('ValorInscricao', r, PADRAO.ValorInscricao);
-    metaArr += getConfigReg('MetaArrecadacao', r, PADRAO.MetaArrecadacao);
-    metaBrig += getConfigReg('MetaBrigadeiros', r, PADRAO.MetaBrigadeiros);
+    metas[r] = {
+      arrecadacao: getConfigReg('MetaArrecadacao', r, PADRAO.MetaArrecadacao),
+      brigadeiros: getConfigReg('MetaBrigadeiros', r, PADRAO.MetaBrigadeiros)
+    };
+    metaArr += metas[r].arrecadacao;
+    metaBrig += metas[r].brigadeiros;
   });
   return {
     alimentos: getAlimentos(reg),
@@ -680,6 +684,7 @@ function carregarTudo(user, reg) {
     metaBrigadeiros: metaBrig,
     valorInscricao: reg === TODAS ? null : valores[reg],
     valoresInscricao: valores,
+    metasPorRegional: metas,
     user: publicUser(user),
     regional: reg,
     regionais: REGIONAIS
