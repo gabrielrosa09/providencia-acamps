@@ -227,34 +227,63 @@ function sbc(b) {
 
 function dBS(id) {
   id = Number(id);
-  if (!confirm("Remover esta venda?")) return;
-  apiPost({ action: "deleteBrigVenda", id: id })
-    .then(function () {
-      brigVendas = brigVendas.filter(function (x) {
-        return Number(x.id) !== id;
+  var v = brigVendas.find(function (x) {
+    return Number(x.id) === id;
+  });
+  if (!v) return;
+  confirmar({
+    icone: "✕",
+    titulo: "Remover esta venda?",
+    msg:
+      '<div class="cf-det"><span>' + fmtD(v.date) + '</span><span class="cf-seta">·</span><span>' +
+      v.qty + " un × R$ " + F(v.unitPrice) + '</span><span class="cf-seta">=</span><span style="color:var(--success)">R$ ' +
+      F(v.qty * v.unitPrice) + "</span></div>" +
+      (v.description ? '<p style="margin-top:10px">' + esc(v.description) + "</p>" : ""),
+    ok: "Remover",
+  }).then(function (ok) {
+    if (!ok) return;
+    apiPost({ action: "deleteBrigVenda", id: id })
+      .then(function () {
+        brigVendas = brigVendas.filter(function (x) {
+          return Number(x.id) !== id;
+        });
+        R();
+        toast("Removido!", true);
+      })
+      .catch(function (e) {
+        alert("Erro: " + e.message);
       });
-      R();
-      toast("Removido!", true);
-    })
-    .catch(function (e) {
-      alert("Erro: " + e.message);
-    });
+  });
 }
 
 function dBC(id) {
   id = Number(id);
-  if (!confirm("Remover este custo?")) return;
-  apiPost({ action: "deleteBrigCusto", id: id })
-    .then(function () {
-      brigCustos = brigCustos.filter(function (x) {
-        return Number(x.id) !== id;
+  var c = brigCustos.find(function (x) {
+    return Number(x.id) === id;
+  });
+  if (!c) return;
+  confirmar({
+    icone: "✕",
+    titulo: "Remover este custo?",
+    msg:
+      '<div class="cf-det"><span>' + fmtD(c.date) + '</span><span class="cf-seta">·</span><span style="color:var(--danger)">- R$ ' +
+      F(c.amount) + "</span></div>" +
+      (c.description ? '<p style="margin-top:10px">' + esc(c.description) + "</p>" : ""),
+    ok: "Remover",
+  }).then(function (ok) {
+    if (!ok) return;
+    apiPost({ action: "deleteBrigCusto", id: id })
+      .then(function () {
+        brigCustos = brigCustos.filter(function (x) {
+          return Number(x.id) !== id;
+        });
+        R();
+        toast("Removido!", true);
+      })
+      .catch(function (e) {
+        alert("Erro: " + e.message);
       });
-      R();
-      toast("Removido!", true);
-    })
-    .catch(function (e) {
-      alert("Erro: " + e.message);
-    });
+  });
 }
 
 function sbg(b) {

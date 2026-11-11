@@ -89,10 +89,11 @@ function rFT() {
       "</span>" +
       pb(f.received, f.goal) +
       '<div style="display:flex;gap:4px;justify-content:center">' +
-      ib("var(--success-bg)", "var(--success)", "oD(" + f.id + ")", "＋") +
-      ib("rgba(255,255,255,.05)", "var(--text2)", "oH(" + f.id + ")", "⏱") +
-      ib("rgba(255,255,255,.05)", "var(--text2)", "oEF(" + f.id + ")", "✎") +
-      ib("var(--danger-bg)", "var(--danger)", "dF(" + f.id + ")", "✕") +
+      ib("var(--success-bg)", "var(--success)", "oD(" + f.id + ")", "＋", "Registrar doação") +
+      ib("rgba(255,255,255,.05)", "var(--text2)", "oH(" + f.id + ")", "⏱", "Histórico") +
+      ib("rgba(255,255,255,.05)", "var(--text2)", "oEF(" + f.id + ")", "✎", "Editar") +
+      ib("var(--warning-bg)", "var(--warning)", "zF(" + f.id + ")", "↺", "Zerar recebido") +
+      ib("var(--danger-bg)", "var(--danger)", "dF(" + f.id + ")", "✕", "Excluir") +
       "</div></div>";
     c +=
       '<div class="fc"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;gap:12px"><div style="flex:1"><div style="display:flex;align-items:center;gap:8px"><div class="dot" style="background:' +
@@ -119,7 +120,9 @@ function rFT() {
       f.id +
       ')">⏱ Histórico</button><button class="btn btn-ghost btn-sm" onclick="oEF(' +
       f.id +
-      ')">✎ Editar</button><button class="btn btn-danger btn-sm" onclick="dF(' +
+      ')">✎ Editar</button><button class="btn btn-sm" style="background:var(--warning-bg);color:var(--warning)" onclick="zF(' +
+      f.id +
+      ')">↺ Zerar</button><button class="btn btn-danger btn-sm" onclick="dF(' +
       f.id +
       ')">✕</button></div></div>';
   });
@@ -277,19 +280,59 @@ function sd(b) {
     });
 }
 
+// Zera o recebido (e o histórico) mantendo o alimento e a meta
+function zF(id) {
+  id = Number(id);
+  var f = fF(id);
+  if (!f) return;
+  if (!f.received) return toast('"' + f.name + '" já está zerado.', true);
+  confirmar({
+    tipo: "warning",
+    icone: "↺",
+    titulo: "Zerar " + esc(f.name) + "?",
+    msg:
+      '<div class="cf-det"><span>' + f.received + " " + esc(f.unit) + '</span><span class="cf-seta">→</span><span class="cf-novo">0 ' + esc(f.unit) + "</span></div>" +
+      '<p style="margin-top:12px">O histórico de doações desse alimento será apagado.<br>O alimento e a meta de <b>' +
+      f.goal + " " + esc(f.unit) + "</b> continuam.</p>",
+    ok: "Zerar",
+  })
+    .then(function (ok) {
+      if (!ok) throw null; // cancelou
+      return apiPost({ action: "zerarAlimento", id: id });
+    })
+    .then(function () {
+      f.received = 0;
+      R();
+      toast("Alimento zerado!", true);
+    })
+    .catch(function (e) {
+      if (e) alert("Erro: " + e.message);
+    });
+}
+
 function dF(id) {
   id = Number(id);
   var f = fF(id);
-  if (!f || !confirm('Remover "' + f.name + '"?')) return;
-  apiPost({ action: "deleteAlimento", id: id })
-    .then(function () {
-      alimentos = alimentos.filter(function (x) {
-        return Number(x.id) !== id;
+  if (!f) return;
+  confirmar({
+    icone: "✕",
+    titulo: "Excluir " + esc(f.name) + "?",
+    msg:
+      "O alimento, a meta e todo o histórico de doações dele serão apagados. <b>Não dá para desfazer.</b>" +
+      '<p style="margin-top:10px">Se quiser só recomeçar a contagem, use <b>↺ Zerar</b>.</p>',
+    ok: "Excluir",
+  }).then(function (ok) {
+    if (!ok) return;
+    apiPost({ action: "deleteAlimento", id: id })
+      .then(function () {
+        alimentos = alimentos.filter(function (x) {
+          return Number(x.id) !== id;
+        });
+        R();
+        toast("Removido!", true);
+      })
+      .catch(function (e) {
+        alert("Erro: " + e.message);
       });
-      R();
-      toast("Removido!", true);
-    })
-    .catch(function (e) {
-      alert("Erro: " + e.message);
-    });
+  });
 }

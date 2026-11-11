@@ -319,25 +319,33 @@ function subEditPart(b) {
 function dP(id) {
   id = Number(id);
   var p = fP(id);
-  if (!p || !confirm('Remover "' + p.name + '"?')) return;
-  apiPost({ action: "deleteParticipante", id: id })
-    .then(function (res) {
-      if (res.error) {
-        toast("Erro: " + res.error, false);
-        return;
-      }
-      return apiGet("carregarTudo");
-    })
-    .then(function (d) {
-      if (!d) return;
-      participantes = d.participantes || [];
-      apadrinhamentos = d.apadrinhamentos || [];
-      R();
-      toast("Removido!", true);
-    })
-    .catch(function (e) {
-      alert("Erro: " + e.message);
-    });
+  if (!p) return;
+  confirmar({
+    icone: "✕",
+    titulo: "Remover " + esc(p.name) + "?",
+    msg: "O cadastro desse participante será apagado. <b>Não dá para desfazer.</b>",
+    ok: "Remover",
+  }).then(function (ok) {
+    if (!ok) return;
+    apiPost({ action: "deleteParticipante", id: id })
+      .then(function (res) {
+        if (res.error) {
+          toast("Erro: " + res.error, false);
+          return;
+        }
+        return apiGet("carregarTudo");
+      })
+      .then(function (d) {
+        if (!d) return;
+        participantes = d.participantes || [];
+        apadrinhamentos = d.apadrinhamentos || [];
+        R();
+        toast("Removido!", true);
+      })
+      .catch(function (e) {
+        alert("Erro: " + e.message);
+      });
+  });
 }
 
 function subInsc(b) {

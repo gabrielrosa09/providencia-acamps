@@ -34,10 +34,12 @@ function sc(i, l, v, s, c, pct) {
   );
 }
 
-// Botão de ícone inline
-function ib(bg, c, fn, icon) {
+// Botão de ícone inline (t: dica ao passar o mouse, opcional)
+function ib(bg, c, fn, icon, t) {
   return (
-    '<button class="ib" style="background:' +
+    '<button class="ib"' +
+    (t ? ' title="' + t + '" aria-label="' + t + '"' : "") +
+    ' style="background:' +
     bg +
     ";color:" +
     c +
@@ -47,4 +49,47 @@ function ib(bg, c, fn, icon) {
     icon +
     "</button>"
   );
+}
+
+// Caixa de confirmação no estilo do site (substitui o confirm() do navegador)
+// confirmar({ titulo, msg (HTML), ok: "Texto do botão", tipo: "warning" | "danger", icone })
+// Retorna Promise<boolean>: true se confirmou.
+function confirmar(o) {
+  var tipo = o.tipo || "danger",
+    prev = document.activeElement;
+  return new Promise(function (res) {
+    var ov = document.createElement("div");
+    ov.className = "mo open cf";
+    ov.innerHTML =
+      '<div class="md cf-box" role="alertdialog" aria-modal="true" aria-labelledby="cf-t" aria-describedby="cf-m">' +
+      '<div class="cf-ic cf-' + tipo + '" aria-hidden="true">' + (o.icone || "!") + "</div>" +
+      '<h3 id="cf-t" class="cf-t">' + o.titulo + "</h3>" +
+      '<div id="cf-m" class="cf-msg">' + (o.msg || "") + "</div>" +
+      '<div class="cf-fa">' +
+      '<button type="button" class="btn btn-secondary" data-r="0">' + (o.cancelar || "Cancelar") + "</button>" +
+      '<button type="button" class="btn cf-ok cf-' + tipo + '" data-r="1">' + (o.ok || "Confirmar") + "</button>" +
+      "</div></div>";
+    document.body.appendChild(ov);
+
+    function fim(v) {
+      document.removeEventListener("keydown", kd, true);
+      ov.remove();
+      if (prev && prev.focus) prev.focus();
+      res(v);
+    }
+    function kd(e) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        e.stopPropagation();
+        fim(false);
+      }
+    }
+    ov.addEventListener("click", function (e) {
+      if (e.target === ov) return fim(false);
+      var b = e.target.closest("[data-r]");
+      if (b) fim(b.dataset.r === "1");
+    });
+    document.addEventListener("keydown", kd, true);
+    ov.querySelector(".cf-ok").focus();
+  });
 }

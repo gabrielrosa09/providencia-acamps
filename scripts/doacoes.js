@@ -104,18 +104,32 @@ function sas(b) {
 
 function dS(id) {
   id = Number(id);
-  if (!confirm("Remover esta doação?")) return;
-  apiPost({ action: "deleteApadrinhamento", id: id })
-    .then(function () {
-      apadrinhamentos = apadrinhamentos.filter(function (s) {
-        return Number(s.id) !== id;
+  var d = apadrinhamentos.find(function (x) {
+    return Number(x.id) === id;
+  });
+  if (!d) return;
+  confirmar({
+    icone: "✕",
+    titulo: "Remover esta doação?",
+    msg:
+      '<div class="cf-det"><span>' + esc(d.name) + '</span><span class="cf-seta">·</span><span style="color:var(--success)">R$ ' +
+      F(d.amount) + "</span></div>" +
+      '<p style="margin-top:10px">' + esc(d.method) + (d.youth ? " · " + esc(d.youth) : "") + " · " + fmtD(d.date) + "</p>",
+    ok: "Remover",
+  }).then(function (ok) {
+    if (!ok) return;
+    apiPost({ action: "deleteApadrinhamento", id: id })
+      .then(function () {
+        apadrinhamentos = apadrinhamentos.filter(function (s) {
+          return Number(s.id) !== id;
+        });
+        R();
+        toast("Removido!", true);
+      })
+      .catch(function (e) {
+        alert("Erro: " + e.message);
       });
-      R();
-      toast("Removido!", true);
-    })
-    .catch(function (e) {
-      alert("Erro: " + e.message);
-    });
+  });
 }
 
 function sg(b) {

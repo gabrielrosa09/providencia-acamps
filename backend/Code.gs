@@ -106,6 +106,7 @@ function doPost(e) {
       case 'addAlimento': result = addAlimento(reg, body.nome, body.unidade, body.meta); break;
       case 'updateAlimento': result = updateAlimento(reg, body.id, body.nome, body.unidade, body.meta); break;
       case 'deleteAlimento': result = deleteAlimento(reg, body.id); break;
+      case 'zerarAlimento': result = zerarAlimento(reg, body.id); break;
       case 'registrarDoacao': result = registrarDoacao(reg, body.alimentoId, body.quantidade, body.doador); break;
       // Apadrinhamento (doações)
       case 'addApadrinhamento': result = addApadrinhamento(reg, body.nome, body.valor, body.metodo, body.jovem, body.data); break;
@@ -535,6 +536,13 @@ function updateAlimento(reg,id,nome,unidade,meta) {
 function deleteAlimento(reg,id) {
   var r=findRowReg(SHEETS.ALIMENTOS,id,reg); if(r<0)throw new Error('Alimento não encontrado.');
   getSheet(SHEETS.ALIMENTOS).deleteRow(r); deleteHistoricoByAlimento(id);
+  return{success:true};
+}
+// Zera o recebido e apaga o histórico do alimento (mantém nome, unidade e meta)
+function zerarAlimento(reg,id) {
+  var r=findRowReg(SHEETS.ALIMENTOS,id,reg); if(r<0)throw new Error('Alimento não encontrado.');
+  getSheet(SHEETS.ALIMENTOS).getRange(r,5).setValue(0);
+  deleteHistoricoByAlimento(id);
   return{success:true};
 }
 function registrarDoacao(reg,alimentoId,quantidade,doador) {

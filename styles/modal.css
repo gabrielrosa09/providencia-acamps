@@ -144,3 +144,106 @@
   font-weight: 600;
   font-size: 14px;
 }
+
+/* Caixa de confirmação (confirmar() em ui.js) */
+.cf {
+  z-index: 1200;
+}
+.cf-box {
+  max-width: 380px;
+  text-align: center;
+  padding: 26px 24px 22px;
+  animation: cfIn 0.18s ease-out;
+}
+@keyframes cfIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.cf-ic {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  font-weight: 700;
+}
+.cf-ic.cf-warning {
+  background: var(--warning-bg);
+  color: var(--warning);
+  box-shadow: 0 0 0 6px rgba(255, 152, 0, 0.06);
+}
+.cf-ic.cf-danger {
+  background: var(--danger-bg);
+  color: var(--danger);
+  box-shadow: 0 0 0 6px rgba(239, 83, 80, 0.06);
+}
+.cf-t {
+  font-family: "DM Serif Display", serif;
+  font-weight: 400;
+  font-size: 19px;
+  margin-bottom: 8px;
+}
+.cf-msg {
+  color: var(--text2);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.cf-msg b {
+  color: var(--text);
+}
+/* Bloco "antes → depois" dentro da mensagem */
+.cf-det {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin: 14px 0 4px;
+  padding: 12px;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+.cf-det .cf-seta {
+  color: var(--text2);
+  font-weight: 400;
+}
+.cf-det .cf-novo {
+  color: var(--warning);
+}
+.cf-fa {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 20px;
+}
+.cf-fa .btn {
+  justify-content: center;
+}
+.cf-ok {
+  font-weight: 700;
+}
+.cf-ok.cf-warning {
+  background: var(--warning);
+  color: #1a1510;
+}
+.cf-ok.cf-danger {
+  background: var(--danger);
+  color: #fff;
+}
+.cf-ok:focus-visible,
+.cf-fa .btn-secondary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

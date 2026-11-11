@@ -306,16 +306,26 @@ function toggleU(id) {
 
 function delU(id) {
   var u = fU(id);
-  if (!u || !confirm('Remover o usuário "' + u.nome + '"?')) return;
-  apiPost({ action: "deleteUsuario", id: id })
-    .then(function () {
-      equipe = equipe.filter(function (x) {
-        return x.id !== id;
+  if (!u) return;
+  confirmar({
+    icone: "✕",
+    titulo: "Remover " + esc(u.nome) + "?",
+    msg:
+      "<b>@" + esc(u.usuario) + "</b> perde o acesso ao site na hora. <b>Não dá para desfazer.</b>" +
+      '<p style="margin-top:10px">Para bloquear só por um tempo, use <b>Desativar</b>.</p>',
+    ok: "Remover",
+  }).then(function (ok) {
+    if (!ok) return;
+    apiPost({ action: "deleteUsuario", id: id })
+      .then(function () {
+        equipe = equipe.filter(function (x) {
+          return x.id !== id;
+        });
+        rEquipe();
+        toast("Removido!", true);
+      })
+      .catch(function (e) {
+        alert("Erro: " + e.message);
       });
-      rEquipe();
-      toast("Removido!", true);
-    })
-    .catch(function (e) {
-      alert("Erro: " + e.message);
-    });
+  });
 }
